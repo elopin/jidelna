@@ -30,10 +30,10 @@ public class CalendarMonth extends JPanel {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<form action=\"\" method=\"post\">");
 		sb.append("<table>");
-		for(int i = 0; i < days.size();i++) {
-			if(i%6 == 0) {
+		for(int i = 0; i < days.size();) {
+			if(i%7 == 0) {
 				sb.append("<tr>");
-				for(int j = 0; j < 6; j++, i++) {
+				for(int j = 0; j < 7 && i < days.size(); j++, i++) {
 					sb.append("<td>");
 					sb.append(days.get(i).toString());
 					sb.append("</td>");
