@@ -1,4 +1,4 @@
-package jidelna.calendar.model;
+package jidelna.calendar;
 
 
 public class CalendarDay {

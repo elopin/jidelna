@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jidelna.calendar.model.CalendarMonth;
+import jidelna.calendar.CalendarMonth;
 
 /**
  * Servlet implementation class CalendarServlet

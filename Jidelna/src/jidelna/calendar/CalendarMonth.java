@@ -1,4 +1,4 @@
-package jidelna.calendar.model;
+package jidelna.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
