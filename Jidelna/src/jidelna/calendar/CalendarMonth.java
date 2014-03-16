@@ -22,7 +22,6 @@ public class CalendarMonth {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<form action=\"\" method=\"post\">");
-		
 		sb.append("<table>");
 		sb.append("<tr><th>Po</th><th>Út</th><th>St</th><th>Čt</th><th>Pá</th><th>So</th><th>Ne</th></tr><tr>");
 		
@@ -34,10 +33,10 @@ public class CalendarMonth {
 		    }
 		    
 		    sb.append("<td></td>");
+		    
 		    calendar.add(Calendar.DAY_OF_WEEK, 1);
 		}
-		for(int i = 0; i < days.size(); i++) {
-		    	
+		for(int i = 0; i < days.size(); i++) {	
 			sb.append("<td>");
 			sb.append(days.get(i).toString());
 			sb.append("</td>");
