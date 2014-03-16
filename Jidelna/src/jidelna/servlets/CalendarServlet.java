@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import jidelna.beans.DayMenuBean;
 import jidelna.beans.DaysMenuBean;
 
 import jidelna.calendar.CalendarMonth;
@@ -34,6 +35,10 @@ public class CalendarServlet extends HttpServlet {
 	
 	HttpSession session = request.getSession();
 	DaysMenuBean menus = (DaysMenuBean)request.getServletContext().getAttribute("menus");
+	DayMenuBean todayMenu = null;
+	
+	
+	
 	
 	
 	Locale locale = new Locale("cs","CZ");
@@ -48,8 +53,6 @@ public class CalendarServlet extends HttpServlet {
 	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))-1);   
 	}
 	
-	
-	
 	if(request.getParameter("after") != null) {
 	    request.setAttribute("after", true);
 	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))+1);
@@ -58,6 +61,14 @@ public class CalendarServlet extends HttpServlet {
 	CalendarMonth month = new CalendarMonth(calendar);
 	if(menus != null) {
 	    month.setMenus(menus);
+	    if(request.getParameter("menuDay") != null) {
+		String id = request.getParameter("menuDay")+calendar.get(Calendar.MONTH)+calendar.get(Calendar.YEAR);
+		for(DayMenuBean dayMenu : menus.getDays()) {
+		    if(dayMenu.getId().equals(id)) {
+			todayMenu = dayMenu;
+		    }
+		}
+	    }
 	}
 	
     	response.setContentType("text/html;charset=UTF-8");
@@ -82,8 +93,16 @@ public class CalendarServlet extends HttpServlet {
 		out.println("</div>");
 		
 		out.println(menus.getDays().get(0).getCalendar().getTime().toString());
+		out.println("<form action=\"\" method=\"post\">");
 		out.println(month.toString());
-			
+		out.println("</form>");
+		
+		if(todayMenu != null) {
+		    out.println(todayMenu.getMenu1()+", cena: "+todayMenu.getMenu1price());
+		    out.println(todayMenu.getMenu2()+", cena: "+todayMenu.getMenu2price());
+		}
+		
+		
 		out.println("</body></html>");
 			
 		} catch (IOException e) {

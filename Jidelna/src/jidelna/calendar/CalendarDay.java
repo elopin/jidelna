@@ -62,14 +62,15 @@ public class CalendarDay {
     public String toString() {
 	StringBuilder sb = new StringBuilder();
 	if (getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
-	    sb.append("<label style=\"background-color: grey\">");
+	    sb.append("<label style=\"background-color: green\">");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</label>");
 	} else {
 	    if (getMenuBean() != null) {
-		sb.append("<a href=\"\">");
+		
+		sb.append("<input type=\"submit\" name=\"menuDay\" value=\"");
 		sb.append(String.valueOf(getDayInMonth()));
-		sb.append("</a>");
+		sb.append("\">");
 	    } else {
 		sb.append("<label>");
 		sb.append(String.valueOf(getDayInMonth()));

@@ -12,20 +12,29 @@ import java.util.Calendar;
  */
 public class DayMenuBean {
     
+    private String id;
+    
     private Calendar calendar;
     private String menu1;
     private int menu1price;
     private String menu2;
     private int menu2price;
-    
-    
 
+    public String getId() {
+	return id;
+    }
+    
     public Calendar getCalendar() {
 	return calendar;
     }
 
     public void setCalendar(Calendar calendar) {
 	this.calendar = calendar;
+	StringBuilder idsb = new StringBuilder();
+	idsb.append(calendar.get(Calendar.DAY_OF_MONTH));
+	idsb.append(calendar.get(Calendar.MONTH));
+	idsb.append(calendar.get(Calendar.YEAR));
+	this.id = idsb.toString();
     }
 
     public String getMenu1() {
