@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jidelna.calendar.CalendarMonth;
 
@@ -29,26 +30,47 @@ public class CalendarServlet extends HttpServlet {
 
     
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-    	Calendar calendar = Calendar.getInstance(new Locale("cs","CZ"));
+	
+	HttpSession session = request.getSession();
+	
+	Locale locale = new Locale("cs","CZ");
+    	Calendar calendar = (Calendar)session.getAttribute("calendar");
     	
-    	response.setCharacterEncoding("UTF-8");
-    	//response.setContentType("html/text");
+	if(calendar == null) {
+	    calendar = Calendar.getInstance(locale);
+	}
+	
+	if(request.getParameter("before") != null) {
+	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))-1);
+	}
+	if(request.getParameter("after") != null) {
+	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))+1);
+	}
+	session.setAttribute("calendar", calendar);
+	CalendarMonth month = new CalendarMonth(calendar);
+	
+    	response.setContentType("text/html;charset=UTF-8");
     	PrintWriter out = null;
     	try {
     		out = response.getWriter();
     		out.println("<html><head></head><body>");
-    		
+		out.println("<div>");
+		out.println("<form action=\"\">");
+		out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
+		out.println("</form>");
+		out.println("<label>");
+		out.println(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
+		out.println(" "+calendar.get(Calendar.YEAR));
+		out.println("</label>");
+		out.println("<form action=\"\">");
+		out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
+		out.println("</form>");
+		out.println("</div>");
+		
+		
+		out.println(month.toString());
 			
-			out.println(calendar.getTime().toString());
-			out.println(calendar.get(Calendar.DAY_OF_MONTH));
-			out.println(calendar.get(Calendar.MONTH));
-			out.println(calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
-			out.println(calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-			
-			CalendarMonth month = new CalendarMonth(Calendar.MONTH);
-			out.println(month.toString());
-			
-			out.println("</body></html>");
+		out.println("</body></html>");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
