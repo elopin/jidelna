@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import jidelna.beans.DaysMenuBean;
 
 import jidelna.calendar.CalendarMonth;
 
@@ -32,6 +33,8 @@ public class CalendarServlet extends HttpServlet {
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 	
 	HttpSession session = request.getSession();
+	DaysMenuBean menus = (DaysMenuBean)request.getServletContext().getAttribute("menus");
+	
 	
 	Locale locale = new Locale("cs","CZ");
     	Calendar calendar = (Calendar)session.getAttribute("calendar");
@@ -41,33 +44,44 @@ public class CalendarServlet extends HttpServlet {
 	}
 	
 	if(request.getParameter("before") != null) {
-	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))-1);
+	    request.setAttribute("before", true);
+	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))-1);   
 	}
+	
+	
+	
 	if(request.getParameter("after") != null) {
+	    request.setAttribute("after", true);
 	    calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH))+1);
 	}
 	session.setAttribute("calendar", calendar);
 	CalendarMonth month = new CalendarMonth(calendar);
+	if(menus != null) {
+	    month.setMenus(menus);
+	}
 	
     	response.setContentType("text/html;charset=UTF-8");
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+	response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+	response.setDateHeader("Expires", 0); // Proxies.
     	PrintWriter out = null;
     	try {
     		out = response.getWriter();
     		out.println("<html><head></head><body>");
 		out.println("<div>");
-		out.println("<form action=\"\">");
+		out.println("<form action=\"\" method=\"post\">");
 		out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
 		out.println("</form>");
 		out.println("<label>");
 		out.println(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
 		out.println(" "+calendar.get(Calendar.YEAR));
 		out.println("</label>");
-		out.println("<form action=\"\">");
+		out.println("<form action=\"\" method=\"post\">");
 		out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
 		out.println("</form>");
 		out.println("</div>");
 		
-		
+		out.println(menus.getDays().get(0).getCalendar().getTime().toString());
 		out.println(month.toString());
 			
 		out.println("</body></html>");
@@ -77,7 +91,6 @@ public class CalendarServlet extends HttpServlet {
 		} finally {
 			out.close();
 		}
-    	
     }
     
     

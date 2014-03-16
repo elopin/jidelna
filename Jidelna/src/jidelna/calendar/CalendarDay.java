@@ -1,16 +1,29 @@
 package jidelna.calendar;
 
 import java.util.Calendar;
+import jidelna.beans.DayMenuBean;
 
 public class CalendarDay {
 
+    private DayMenuBean menuBean;
     
     private int dayInMonth;
     private int dayInWeek;
+    private boolean currentChoice;
+    private boolean menuAvailable;
+    private boolean menuSelected;
 
     public CalendarDay(Calendar calendar) {
 	this.dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
 	this.dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public DayMenuBean getMenuBean() {
+	return menuBean;
+    }
+
+    public void setMenuBean(DayMenuBean menuBean) {
+	this.menuBean = menuBean;
     }
 
     public int getDayInMonth() {
@@ -29,16 +42,39 @@ public class CalendarDay {
 	this.dayInWeek = dayInWeek;
     }
 
-    
+    public boolean isCurrentChoice() {
+	return currentChoice;
+    }
+
+    public void setCurrentChoice(boolean currentChoice) {
+	this.currentChoice = currentChoice;
+    }
+
+
+    public boolean isMenuSelected() {
+	return menuSelected;
+    }
+
+    public void setMenuSelected(boolean menuSelected) {
+	this.menuSelected = menuSelected;
+    }
 
     public String toString() {
 	StringBuilder sb = new StringBuilder();
-	if ( getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
-	    sb.append(String.valueOf(getDayInMonth()));
+	if (getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
+	    sb.append("<label style=\"background-color: grey\">");
+		sb.append(String.valueOf(getDayInMonth()));
+		sb.append("</label>");
 	} else {
-	    sb.append("<a href=\"\">");
-	    sb.append(String.valueOf(getDayInMonth()));
-	    sb.append("</a>");
+	    if (getMenuBean() != null) {
+		sb.append("<a href=\"\">");
+		sb.append(String.valueOf(getDayInMonth()));
+		sb.append("</a>");
+	    } else {
+		sb.append("<label>");
+		sb.append(String.valueOf(getDayInMonth()));
+		sb.append("</label>");
+	    }
 	}
 	return sb.toString();
     }

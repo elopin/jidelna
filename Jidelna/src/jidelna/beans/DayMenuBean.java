@@ -4,7 +4,7 @@
  */
 package jidelna.beans;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -12,18 +12,20 @@ import java.util.Date;
  */
 public class DayMenuBean {
     
-    private Date date;
+    private Calendar calendar;
     private String menu1;
     private int menu1price;
     private String menu2;
     private int menu2price;
+    
+    
 
-    public Date getDate() {
-	return date;
+    public Calendar getCalendar() {
+	return calendar;
     }
 
-    public void setDate(Date date) {
-	this.date = date;
+    public void setCalendar(Calendar calendar) {
+	this.calendar = calendar;
     }
 
     public String getMenu1() {

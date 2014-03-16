@@ -20,7 +20,9 @@ public class DaysMenuBean {
 	public List<DayMenuBean> getDays() {
 		if(days.isEmpty()) {
 			DayMenuBean today = new DayMenuBean();
-			today.setDate(Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ")).getTime());
+			Calendar nextDay = Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ"));
+			nextDay.add(Calendar.DAY_OF_MONTH, 1);
+			today.setCalendar(nextDay);
 			today.setMenu1("Rizoto");
 			today.setMenu1price(35);
 			today.setMenu2("Kuře");
