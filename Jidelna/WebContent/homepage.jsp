@@ -12,12 +12,15 @@
 	
 	<%
 			if(request.getParameter("logout") != null) {
-				user.setLoggedIn(false);
-				response.sendRedirect("/Jidelna");
+                            user.setLoggedIn(false);
+                            response.sendRedirect("/Jidelna");
 			}
 			if(request.getParameter("menu") != null) {
-				response.sendRedirect("/Jidelna/CalendarServlet");
+                            response.sendRedirect("/Jidelna/CalendarServlet");
 			}
+                        if(request.getParameter("credit") != null) {
+                            response.sendRedirect("userCredit.jsp");
+                        }
 	%>
 			
 			
@@ -25,11 +28,7 @@
 			Přihlášen uživatel: <jsp:getProperty name="user" property="email"/>
 			<form action="" method="post">
 				<input type="submit" name="logout" value="Odhlásit"/>
-			</form>
-			<form action="" method="post">
 				<input type="submit" name="menu" value="Obědy"/>
-			</form>
-			<form action="" method="post">
 				<input type="submit" name="credit" value="Kredit"/>
 			</form>
 			
