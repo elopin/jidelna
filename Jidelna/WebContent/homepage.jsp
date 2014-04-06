@@ -41,8 +41,8 @@
 			<br>Seznam strávníků:<br>
 			<ul>
 	<% 
-			for(int i = 0; i < users.getUsers().size(); i++) {
-				out.println("<li>"+users.getUsers().get(i).getEmail());
+			for(String key : users.getUsers().keySet()) {
+				out.println("<li>"+key);
 			} 
 			
 	%>

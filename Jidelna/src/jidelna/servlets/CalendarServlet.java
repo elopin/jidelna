@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Locale;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import jidelna.beans.DayMenuBean;
 import jidelna.beans.DaysMenuBean;
-
+import jidelna.beans.UserBean;
 import jidelna.calendar.CalendarMonth;
 
 /**
@@ -37,8 +36,7 @@ public class CalendarServlet extends HttpServlet {
 	DaysMenuBean menus = (DaysMenuBean)request.getServletContext().getAttribute("menus");
 	DayMenuBean todayMenu = null;
 	
-	
-	
+	UserBean user = (UserBean)session.getAttribute("user");
 	
 	
 	Locale locale = new Locale("cs","CZ");
@@ -59,6 +57,7 @@ public class CalendarServlet extends HttpServlet {
 	}
 	session.setAttribute("calendar", calendar);
 	CalendarMonth month = new CalendarMonth(calendar);
+        month.setAdmin(user.isAdmin());
 	if(menus != null) {
 	    month.setMenus(menus);
 	    if(request.getParameter("menuDay") != null) {
@@ -102,7 +101,10 @@ public class CalendarServlet extends HttpServlet {
 		    out.println(todayMenu.getMenu2()+", cena: "+todayMenu.getMenu2price());
 		}
 		
-		
+		out.println("<form action=\"homepage.jsp\" method=\"post\">");
+		out.println("<input type=\"submit\" name=\"back\" value=\"Zpět\"/>");
+		out.println("</form>");
+                
 		out.println("</body></html>");
 			
 		} catch (IOException e) {

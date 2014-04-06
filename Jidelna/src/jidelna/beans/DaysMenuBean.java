@@ -19,15 +19,24 @@ public class DaysMenuBean {
 
 	public List<DayMenuBean> getDays() {
 		if(days.isEmpty()) {
-			DayMenuBean today = new DayMenuBean();
-			Calendar nextDay = Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ"));
-			nextDay.add(Calendar.DAY_OF_MONTH, 1);
-			today.setCalendar(nextDay);
-			today.setMenu1("Rizoto");
+                        DayMenuBean today = new DayMenuBean();
+			Calendar todayCal = Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ"));
+			today.setCalendar(todayCal);
+			today.setMenu1("Čočka");
 			today.setMenu1price(35);
-			today.setMenu2("Kuře");
+			today.setMenu2("Vepřo, knedlo, zelo");
 			today.setMenu2price(45);
 			days.add(today);
+                    
+			DayMenuBean tommorow = new DayMenuBean();
+			Calendar tommorowCal = Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ"));
+			tommorowCal.add(Calendar.DAY_OF_MONTH, 1);
+			tommorow.setCalendar(tommorowCal);
+			tommorow.setMenu1("Rizoto");
+			tommorow.setMenu1price(35);
+			tommorow.setMenu2("Kuře");
+			tommorow.setMenu2price(45);
+			days.add(tommorow);
 			
 			DayMenuBean dayAfter = new DayMenuBean();
 			Calendar dayAfCal = Calendar.getInstance(TimeZone.getDefault(), new Locale("cs","CZ"));

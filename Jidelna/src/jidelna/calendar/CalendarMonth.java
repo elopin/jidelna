@@ -11,6 +11,8 @@ public class CalendarMonth {
     private List<CalendarDay> days;
     private Calendar calendar;
 
+    private boolean admin;
+    
     public CalendarMonth(Calendar calendar) {
 	this.calendar = calendar;
 	this.days = new ArrayList<CalendarDay>();
@@ -23,16 +25,26 @@ public class CalendarMonth {
 
     public void setMenus(DaysMenuBean menus) {
 	for (CalendarDay calDay : days) {
+            calDay.setAdmin(admin);
 	    for (DayMenuBean menuBean : menus.getDays()) {
 		if (calendar.get(Calendar.YEAR) == menuBean.getCalendar().get(Calendar.YEAR)) {
 		    if (calendar.get(Calendar.MONTH) == menuBean.getCalendar().get(Calendar.MONTH)) {
 			if (calDay.getDayInMonth() == menuBean.getCalendar().get(Calendar.DAY_OF_MONTH)) {
 			    calDay.setMenuBean(menuBean);
+                            calDay.setAdmin(admin);
 			}
 		    }
 		}
 	    }
 	}
+    }
+    
+    public boolean isAdmin() {
+        return admin;
+    }
+    
+    public void setAdmin(boolean isAdmin) {
+        this.admin = isAdmin;
     }
 
     @Override

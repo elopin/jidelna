@@ -15,7 +15,7 @@
 	%>
 		<jsp:setProperty name="newUser" property="*" />	
 	<%
-			users.getUsers().add(newUser);
+			users.getUsers().put(newUser.getEmail(), newUser);
 			response.sendRedirect("homepage.jsp");
 		} 
 	%>

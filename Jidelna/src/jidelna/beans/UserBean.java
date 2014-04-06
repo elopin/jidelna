@@ -1,5 +1,7 @@
 package jidelna.beans;
 
+import java.util.Map.Entry;
+
 public class UserBean {
 	
 	private String email;
@@ -46,10 +48,10 @@ public class UserBean {
 		this.admin = admin;
 	}
 	public boolean checkCredentials(UsersBean users) {
-		for (UserBean validUser : users.getUsers()) {
-			if (validUser.getEmail().equals(getEmail())) {
-				if (validUser.getPassword().equals(getPassword())) {
-					setAdmin(validUser.isAdmin());
+		for (Entry<String, UserBean> validUser : users.getUsers().entrySet()) {
+			if (validUser.getKey().equals(getEmail())) {
+				if (validUser.getValue().getPassword().equals(getPassword())) {
+					setAdmin(validUser.getValue().isAdmin());
 					return true;
 				}
 			}

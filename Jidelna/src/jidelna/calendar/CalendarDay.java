@@ -10,9 +10,10 @@ public class CalendarDay {
     private int dayInMonth;
     private int dayInWeek;
     private boolean currentChoice;
-    private boolean menuAvailable;
     private boolean menuSelected;
 
+    private boolean admin;
+    
     public CalendarDay(Calendar calendar) {
 	this.dayInMonth = calendar.get(Calendar.DAY_OF_MONTH);
 	this.dayInWeek = calendar.get(Calendar.DAY_OF_WEEK);
@@ -58,6 +59,14 @@ public class CalendarDay {
     public void setMenuSelected(boolean menuSelected) {
 	this.menuSelected = menuSelected;
     }
+    
+    public boolean isAdmin() {
+        return admin;
+    }
+    
+    public void setAdmin(boolean isAdmin) {
+        this.admin = isAdmin;
+    }
 
     public String toString() {
 	StringBuilder sb = new StringBuilder();
@@ -66,7 +75,7 @@ public class CalendarDay {
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</label>");
 	} else {
-	    if (getMenuBean() != null) {
+	    if (getMenuBean() != null || admin) {
 		
 		sb.append("<input type=\"submit\" name=\"menuDay\" value=\"");
 		sb.append(String.valueOf(getDayInMonth()));
