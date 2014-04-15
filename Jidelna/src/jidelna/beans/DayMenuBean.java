@@ -4,38 +4,74 @@
  */
 package jidelna.beans;
 
-import java.util.Calendar;
-
 /**
  *
  * @author elopin
  */
 public class DayMenuBean {
     
-    private String id;
+    private int id;
     
-    private Calendar calendar;
+    private int day;
+    private int month;
+    private int year;
+    
     private String menu1;
-    private int menu1price;
+    private int price1;
     private String menu2;
-    private int menu2price;
+    private int price2;
 
-    public String getId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getId() {
 	return id;
     }
-    
-    public Calendar getCalendar() {
-	return calendar;
+
+    /**
+     * @return the day
+     */
+    public int getDay() {
+        return day;
     }
 
-    public void setCalendar(Calendar calendar) {
-	this.calendar = calendar;
-	StringBuilder idsb = new StringBuilder();
-	idsb.append(calendar.get(Calendar.DAY_OF_MONTH));
-	idsb.append(calendar.get(Calendar.MONTH));
-	idsb.append(calendar.get(Calendar.YEAR));
-	this.id = idsb.toString();
+    /**
+     * @param day the day to set
+     */
+    public void setDay(int day) {
+        this.day = day;
     }
+
+    /**
+     * @return the month
+     */
+    public int getMonth() {
+        return month;
+    }
+
+    /**
+     * @param month the month to set
+     */
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    /**
+     * @return the year
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * @param year the year to set
+     */
+    public void setYear(int year) {
+        this.year = year;
+    }
+    
+    
 
     public String getMenu1() {
 	return menu1;
@@ -45,12 +81,12 @@ public class DayMenuBean {
 	this.menu1 = menu1;
     }
 
-    public int getMenu1price() {
-	return menu1price;
+    public int getPrice1() {
+	return price1;
     }
 
-    public void setMenu1price(int menu1price) {
-	this.menu1price = menu1price;
+    public void setPrice1(int price1) {
+	this.price1 = price1;
     }
 
     public String getMenu2() {
@@ -61,12 +97,23 @@ public class DayMenuBean {
 	this.menu2 = menu2;
     }
 
-    public int getMenu2price() {
-	return menu2price;
+    public int getPrice2() {
+	return price2;
     }
 
-    public void setMenu2price(int menu2price) {
-	this.menu2price = menu2price;
+    public void setPrice2(int price2) {
+	this.price2 = price2;
+    }
+    
+    public void setData(DayMenuBean menu) {
+        setId(menu.getId());
+        setDay(menu.getDay());
+        setMonth(menu.getMonth());
+        setYear(menu.getYear());
+        setMenu1(menu.getMenu1());
+        setPrice1(menu.getPrice1());
+        setMenu2(menu.getMenu2());
+        setPrice2(menu.getPrice2());
     }
     
     

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import jidelna.beans.DayMenuBean;
-import jidelna.beans.DaysMenuBean;
 
 public class CalendarMonth {
 
@@ -23,13 +22,13 @@ public class CalendarMonth {
 
     }
 
-    public void setMenus(DaysMenuBean menus) {
+    public void setMenus(List<DayMenuBean> menus) {
 	for (CalendarDay calDay : days) {
             calDay.setAdmin(admin);
-	    for (DayMenuBean menuBean : menus.getDays()) {
-		if (calendar.get(Calendar.YEAR) == menuBean.getCalendar().get(Calendar.YEAR)) {
-		    if (calendar.get(Calendar.MONTH) == menuBean.getCalendar().get(Calendar.MONTH)) {
-			if (calDay.getDayInMonth() == menuBean.getCalendar().get(Calendar.DAY_OF_MONTH)) {
+	    for (DayMenuBean menuBean : menus) {
+		if (calendar.get(Calendar.YEAR) == menuBean.getYear()) {
+		    if (calendar.get(Calendar.MONTH) == menuBean.getMonth()) {
+			if (calDay.getDayInMonth() == menuBean.getDay()) {
 			    calDay.setMenuBean(menuBean);
                             calDay.setAdmin(admin);
 			}

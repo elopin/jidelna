@@ -1,59 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>    
-<jsp:useBean id="users" scope="application" class="jidelna.beans.UsersBean"/> 
+         pageEncoding="UTF-8"%>
+<%@ page import="jidelna.beans.UserBean" %>
+<%@ page import="jidelna.connection.DataRepository" %>
+<%@ page import="jidelna.connection.DataRepositoryImpl" %>
+<jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>
+<jsp:include page="header.jsp" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	
-	<%
-			if(request.getParameter("logout") != null) {
-                            user.setLoggedIn(false);
-                            response.sendRedirect("/Jidelna");
-			}
-			if(request.getParameter("menu") != null) {
-                            response.sendRedirect("/Jidelna/CalendarServlet");
-			}
-                        if(request.getParameter("credit") != null) {
-                            response.sendRedirect("userCredit.jsp");
-                        }
-	%>
-			
-			
-	
-			Přihlášen uživatel: <jsp:getProperty name="user" property="email"/>
-			<form action="" method="post">
-				<input type="submit" name="logout" value="Odhlásit"/>
-				<input type="submit" name="menu" value="Obědy"/>
-				<input type="submit" name="credit" value="Kredit"/>
-			</form>
-			
-			
-	<% 
-			if(user.isAdmin()) { 
-	%>
-			
-			
-			<br>Seznam strávníků:<br>
-			<ul>
-	<% 
-			for(String key : users.getUsers().keySet()) {
-				out.println("<li>"+key);
-			} 
-			
-	%>
-			</ul>
-			<form action="newUserForm.jsp" method="post">
-			<input type="submit" name="newUser" value="Přidat strávníka"/>
-			</form>
-	<%
-			}
-	%>
-	
-  
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Hlavní strana</title>
+    </head>
+    <body>
+
+        <%
+
+            if (request.getParameter("menu") != null) {
+                session.removeAttribute("calendar");
+                response.sendRedirect("CalendarServlet");
+            }
+            if (request.getParameter("credit") != null) {
+                response.sendRedirect("userCredit.jsp");
+            }
+        %>
+        <form action="" method="post">
+            <input type="submit" name="menu" value="Obědy"/>
+            <input type="submit" name="credit" value="Kredit"/>
+        </form>
+
+
+        <%
+            if (user.isAdmin()) {
+        %>
+
+
+        <br>Seznam strávníků:<br>
+
+
+        <%
+            DataRepository repository = new DataRepositoryImpl();
+        %>
+        <form action="userForm.jsp" method="post"> 
+            <table>
+                <%
+                    for (UserBean u : repository.getUsers()) {
+                %>
+
+                <tr>
+                    <td><label><% out.print(u.getDisplayName()); %></label></td>
+                    <td><button type="submit" name="edit" value="<% out.print(u.getId()); %>">Editovat</button></td>
+                </tr>
+
+                <%
+                    }
+                %>
+            </table>
+        </form>
+        <form action="userForm.jsp" method="post">
+            <input type="submit" name="newUser" value="Přidat strávníka"/>
+        </form>
+        <%            }
+        %>
+
+
+    </body>
 </html>

@@ -41,6 +41,8 @@ public class LoginFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
+                req.setCharacterEncoding("UTF-8");
+                
 		HttpServletResponse res = (HttpServletResponse) response;
 		res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		res.setHeader("Pragma", "no-cache");
@@ -48,16 +50,19 @@ public class LoginFilter implements Filter {
 
 		UserBean user = (UserBean) req.getSession().getAttribute("user");
 		
-		
-		if (user == null || req.getRequestURI().endsWith("/Jidelna/")) {
+		if (req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/")) {
 			chain.doFilter(request, response);
 		} else {
-			if(user.isLoggedIn()) {
-				chain.doFilter(request, response);
-			} else {
-				res.sendRedirect("/Jidelna");
-			}
-		}
+                    if (user != null){
+                        if(user.isLoggedIn()) {
+			    chain.doFilter(request, response);
+		        } else {
+                            res.sendRedirect("index.jsp");
+                        } 
+		    } else {
+                        res.sendRedirect("index.jsp");
+                    }
+                }
 	}
 
 	/**
