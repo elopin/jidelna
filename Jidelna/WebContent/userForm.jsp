@@ -104,11 +104,15 @@
                     <td><label>Potvrdit heslo:</label></td><td><input type="password" name="confirmPassword" value=""/></td>
                 </tr>
 
-                <% if (userForm.isAdmin()) { %>
-                <tr><td>Administrátor <input type="checkbox" name="admin" checked /></td><td></td></tr>
-                        <% } else if (user.isAdmin() && userForm.getId() == 0) { %>
-                <tr><td>Administrátor <input type="checkbox" name="admin" /></td><td></td></tr>
-                        <% }%>
+                <% 
+                        String checked = null;   
+                        if (userForm.isAdmin()) {
+                            checked = "checked";
+                        }
+    
+                        if (user.isAdmin()) { %>
+                <tr><td>Administrátor <input type="checkbox" name="admin" <% out.print(checked); %>/></td><td></td></tr>
+                        <% } %>
                 <tr>
                     <td><button type="submit" name="save" value="<% out.print(userForm.getId());%>">Uložit</button></td><td><input type="submit" name="back" value="Zpět"></td>
                 </tr>
