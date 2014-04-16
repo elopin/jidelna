@@ -18,8 +18,8 @@ import jidelna.beans.UserBean;
 public class TableCreator {
 
     
-    private DataRepository repository;
-    private UserBean admin;
+    private final DataRepository repository;
+    private final UserBean admin;
     
     private final String USERS_TABLE = "CREATE TABLE janacek_User (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, email VARCHAR(30) NOT NULL UNIQUE, name VARCHAR(30) , surname VARCHAR(30), admin BOOLEAN NOT NULL DEFAULT 0, password BLOB NOT NULL, credit DOUBLE NOT NULL DEFAULT 0) CHARACTER SET utf8";
     private final String DAY_MENU_TABLE = "CREATE TABLE janacek_Day_Menu (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, date DATE NOT NULL UNIQUE, menu1 VARCHAR(30) , price1 INT, menu2 VARCHAR(30), price2 INT ) CHARACTER SET utf8";
@@ -39,9 +39,9 @@ public class TableCreator {
     public void createTables() {
         try {
             Statement tableStatement = repository.getConnection().createStatement();
-            //tableStatement.executeUpdate(USERS_TABLE);
-            //repository.addUser(admin);
-            //tableStatement.executeUpdate(DAY_MENU_TABLE);
+            tableStatement.executeUpdate(USERS_TABLE);
+            repository.addUser(admin);
+            tableStatement.executeUpdate(DAY_MENU_TABLE);
             tableStatement.executeUpdate(USER_MENU);
 
         } catch (SQLException ex) {

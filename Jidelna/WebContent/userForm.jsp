@@ -1,3 +1,4 @@
+<%@page import="jidelna.beans.UserBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ page import="jidelna.connection.DataRepository" %>
@@ -17,14 +18,17 @@
         <%
 
             if (request.getParameter("back") != null) {
-                response.sendRedirect("homepage.jsp");
+                response.sendRedirect((String)session.getAttribute("lastURI"));
             }
 
             DataRepository repository = new DataRepositoryImpl();
 
             String idUser = request.getParameter("edit");
             if (idUser != null) {
-                userForm.setData(repository.getUserById(Integer.parseInt(idUser)));
+                UserBean repo = repository.getUserById(Integer.parseInt(idUser));
+                if(repo != null) {
+                    userForm.setData(repo);
+                }
             }
             
             String idUserForm = request.getParameter("save");

@@ -4,6 +4,7 @@
     Author     : elopin
 --%>
 
+<%@page import="jidelna.beans.UserBean"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="jidelna.beans.DayMenuBean"%>
@@ -43,18 +44,20 @@
                 repository.addMenuDay(newMenu);
             }
             
-            System.out.println("D: "+day);
-            
             if (repository.getDailyMenu(day, month, year) != null) {
                 menu.setData(repository.getDailyMenu(day, month, year));
                 
                 if(request.getParameter("confirm") != null) {
                     int selection = Integer.parseInt(request.getParameter("selection"));
-                    userMenu.setUser(user);
-                    userMenu.setDayMenu(menu);
-                    userMenu.setSelection(selection);
-                    repository.addUserMenu(userMenu);
-                    user.setData(repository.getUserById(user.getId()));
+                    
+                    UserBean repoUser = repository.getUserById(user.getId());
+                    if(repoUser != null) {
+                        user = repoUser;
+                        userMenu.setUser(user);
+                        userMenu.setDayMenu(menu);
+                        userMenu.setSelection(selection);
+                        repository.addUserMenu(userMenu);
+                    }
                 }
                 
                 String menu1 = null;

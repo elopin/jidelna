@@ -30,7 +30,8 @@ public class CalendarServlet extends HttpServlet {
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         HttpSession session = request.getSession();
-
+        session.setAttribute("lastURI", request.getRequestURI());
+        
         DataRepository repository = new DataRepositoryImpl();
         List<DayMenuBean> menus = repository.getMenuDays();
         if (menus == null) {

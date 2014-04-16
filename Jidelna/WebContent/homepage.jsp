@@ -15,6 +15,7 @@
 
         <%
 
+            session.setAttribute("lastURI", request.getRequestURI());
             if (request.getParameter("menu") != null) {
                 session.removeAttribute("calendar");
                 response.sendRedirect("CalendarServlet");

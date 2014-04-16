@@ -23,6 +23,10 @@
 			
 	%>
         <div id="header">
+            <div id="date">
+                <label>Dnešní datum: <% out.print((String)session.getAttribute("currentDay")); %></label>
+            </div>
+            
             <div id="logout">
                 <div id="nameLabel">Přihlášen uživatel: <jsp:getProperty name="user" property="displayName"/></div>
             <form action="header.jsp" method="post">

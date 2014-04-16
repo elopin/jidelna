@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  * @author elopin
  */
 public class ConnectionProvider {
-    //private static String dbUrl = "jdbc:mysql://project.iivos.cz:9906/iivos3Dalfa?characterEncoding=utf8";
-    private static String dbUrl = "jdbc:mysql://localhost:3306/iivos3DAlfa?characterEncoding=utf8";    
+    private static String dbUrl = "jdbc:mysql://project.iivos.cz:9906/iivos3Dalfa?characterEncoding=utf8";
+    //private static String dbUrl = "jdbc:mysql://localhost:3306/iivos3DAlfa?characterEncoding=utf8";    
     
     
     private static Connection connection;

@@ -17,6 +17,7 @@
     </head>
     <body>
         <%
+            session.setAttribute("lastURI", request.getRequestURI());
             DataRepository repository = new DataRepositoryImpl();
             for(UserBean userRepo : repository.getUsers()) {
                 if(userRepo.getId() == user.getId()) {
@@ -25,7 +26,10 @@
             }
                       
 	    if(request.getParameter("send") != null) {
-		pageUser = repository.updateUserCredit(pageUser, Double.parseDouble(request.getParameter("credit")));
+                UserBean repo = repository.updateUserCredit(pageUser, Double.parseDouble(request.getParameter("credit")));
+                if(repo != null) {
+		    pageUser = repo;
+                }
 	    }
 	    if(request.getParameter("back") != null) {
 		response.sendRedirect("homepage.jsp");
@@ -34,7 +38,7 @@
             
 	%>
         <h1>Doplnění kreditu:</h1>
-        Aktuální stav: <% out.println(pageUser.getCredit()); %>
+        Aktuální stav: <% out.print(pageUser.getCredit()); %>
         <form action="" method="post">
             <label>Zadejte navýšení kreditu(záporná hodnota kredit sníží):</label>
             <input type="text" name="credit"/>

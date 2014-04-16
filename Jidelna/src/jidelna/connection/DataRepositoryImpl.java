@@ -149,8 +149,9 @@ public class DataRepositoryImpl implements DataRepository {
         try {
             getPasswordHash.setString(1, email);
             ResultSet result = getPasswordHash.executeQuery();
-            result.next();
-            hash = result.getBytes("password");
+            if(result.next()) {
+                 hash = result.getBytes("password");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
