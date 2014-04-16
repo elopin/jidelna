@@ -23,7 +23,6 @@
             DataRepository repository = new DataRepositoryImpl();
 
             String idUser = request.getParameter("edit");
-            
             if (idUser != null) {
                 userForm.setData(repository.getUserById(Integer.parseInt(idUser)));
             }
@@ -80,7 +79,7 @@
             }
         %>
 
-        <form action="" method="post">
+        <form action="userForm.jsp" method="post">
             <table>
                 <tr>
                     <%

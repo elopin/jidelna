@@ -42,4 +42,6 @@ public interface DataRepository {
     public UserMenuBean getUserMenu(UserBean user, DayMenuBean dayMenu);
     
     public void addUserMenu(UserMenuBean userMenu);
+    
+    public void deleteUser(UserBean user);
 }

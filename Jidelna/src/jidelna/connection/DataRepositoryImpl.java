@@ -40,6 +40,7 @@ public class DataRepositoryImpl implements DataRepository {
     private PreparedStatement getUserMenuByDayMenu;
     private PreparedStatement addUserMenu;
     private PreparedStatement deleteUserMenu;
+    private PreparedStatement deleteUserMenuByUserId;
     private Statement statement;
 
     public DataRepositoryImpl() {
@@ -56,6 +57,7 @@ public class DataRepositoryImpl implements DataRepository {
             getUserMenuByDayMenu = connection.getConnection().prepareStatement("SELECT id, id_user, id_day_menu, selection FROM janacek_User_Menu WHERE id_user = ? AND id_day_menu = ?");
             addUserMenu = connection.getConnection().prepareStatement("INSERT INTO janacek_User_Menu(id_user, id_day_menu, selection) VALUES(?, ?, ?)");
             deleteUserMenu = connection.getConnection().prepareStatement("DELETE FROM janacek_User_Menu WHERE id = ?");
+            deleteUserMenuByUserId = connection.getConnection().prepareStatement("DELETE FROM janacek_User_Menu WHERE id_user = ?");
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -86,14 +88,29 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
 
+    @Override
     public void deleteUser(UserBean user) {
         if(user.getId() > 0) {
             UserBean userBean = getUserById(user.getId());
             if(userBean != null) {
                 try {
+                    connection.getConnection().setAutoCommit(false);
+                    
+                    deleteUserMenuByUserId.setInt(1, userBean.getId());
+                    deleteUserMenuByUserId.executeUpdate();
                     deleteUser.setInt(1, userBean.getId());
                     deleteUser.executeUpdate();
+                    
+                    connection.getConnection().commit();
+                    connection.getConnection().setAutoCommit(true);
                 } catch (SQLException ex) {
+                    if(connection.getConnection() != null) {
+                        try {
+                            connection.getConnection().rollback();
+                        } catch (SQLException ex1) {
+                            Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
                     Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } 

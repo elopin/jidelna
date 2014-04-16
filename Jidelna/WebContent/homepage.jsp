@@ -22,6 +22,13 @@
             if (request.getParameter("credit") != null) {
                 response.sendRedirect("userCredit.jsp");
             }
+            if(request.getParameter("edit") != null) {
+                
+                request.getRequestDispatcher("userForm.jsp").forward(request, response);
+            }
+            if(request.getParameter("remove") != null) {
+                request.getRequestDispatcher("removeUser.jsp").forward(request, response);
+            }
         %>
         <form action="" method="post">
             <input type="submit" name="menu" value="Obědy"/>
@@ -40,7 +47,7 @@
         <%
             DataRepository repository = new DataRepositoryImpl();
         %>
-        <form action="userForm.jsp" method="post"> 
+        <form action="" method="post"> 
             <table>
                 <%
                     for (UserBean u : repository.getUsers()) {
@@ -49,6 +56,7 @@
                 <tr>
                     <td><label><% out.print(u.getDisplayName()); %></label></td>
                     <td><button type="submit" name="edit" value="<% out.print(u.getId()); %>">Editovat</button></td>
+                    <td><button type="submit" name="remove" value="<% out.print(u.getId()); %>">Odstranit</button></td>
                 </tr>
 
                 <%
