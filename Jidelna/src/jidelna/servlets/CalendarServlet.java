@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import jidelna.beans.DayMenuBean;
 import jidelna.beans.UserBean;
+import jidelna.beans.UserMenuBean;
 import jidelna.calendar.CalendarMonth;
 import jidelna.connection.DataRepository;
 import jidelna.connection.DataRepositoryImpl;
@@ -24,22 +25,67 @@ import jidelna.connection.DataRepositoryImpl;
 @WebServlet("/CalendarServlet")
 public class CalendarServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-
-
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         HttpSession session = request.getSession();
         session.setAttribute("lastURI", request.getRequestURI());
         
         DataRepository repository = new DataRepositoryImpl();
+        
+         if (request.getParameter("saveDay") != null) {
+            DayMenuBean newMenu = (DayMenuBean)session.getAttribute("newDayMenu");
+            if(newMenu != null) { 
+                String menu1 = request.getParameter("menu1");
+                if(menu1 != null) {
+                    newMenu.setMenu1(menu1);
+                }
+                String price1 = request.getParameter("price1");
+                if(price1 != null) {
+                    newMenu.setPrice1(Integer.parseInt(price1));
+                }
+                String menu2 = request.getParameter("menu2");
+                if(menu2 != null) {
+                    newMenu.setMenu2(menu2);
+                }
+                String price2 = request.getParameter("price2");
+                if(price2 != null) {
+                    newMenu.setPrice2(Integer.parseInt(price2));
+                }
+
+                repository.addMenuDay(newMenu);
+            }
+         }
+        
         List<DayMenuBean> menus = repository.getMenuDays();
         if (menus == null) {
             menus = new ArrayList<DayMenuBean>();
         }
 
+        
         UserBean user = (UserBean) session.getAttribute("user");
 
+        DayMenuBean menu = (DayMenuBean)session.getAttribute("dailyMenu");
+        if(menu != null) {
+        
+            if(request.getParameter("confirm") != null) {
+                    int selection = Integer.parseInt(request.getParameter("selection"));
+                    
+                    UserBean repoUser = repository.getUserById(user.getId());
+                    if(repoUser != null) {
+                        user = repoUser;
+                        UserMenuBean userMenu = new UserMenuBean();
+                        userMenu.setUser(user);
+                        userMenu.setDayMenu(menu);
+                        userMenu.setSelection(selection);
+                        repository.addUserMenu(userMenu);
+                        
+                    }
+                }
+            }
+        
+        
+        List<UserMenuBean> userMenus = repository.getUserMenusByUser(user);
+        
         Locale locale = new Locale("cs", "CZ");
         Calendar calendar = (Calendar) session.getAttribute("calendar");
         
@@ -70,6 +116,9 @@ public class CalendarServlet extends HttpServlet {
         
         CalendarMonth month = new CalendarMonth(calendar);
         month.setAdmin(user.isAdmin());
+        if(userMenus != null) {
+            month.setUserMenus(userMenus);
+        }    
         month.setMenus(menus);
         
         response.setContentType("text/html;charset=UTF-8");
@@ -81,33 +130,33 @@ public class CalendarServlet extends HttpServlet {
             out = response.getWriter();
             request.getRequestDispatcher("header.jsp").include(request, response);
             out.println("<html><head></head><body>");
-            out.println("<div>");
+            out.println("<div name=\"calendar\"");
+            out.println("<div name=\"monthSelect\">");
             out.println("<form action=\"\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
-            out.println("</form>");
             out.println("<label>");
             out.println(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
             out.println(" " + calendar.get(Calendar.YEAR));
             out.println("</label>");
-            out.println("<form action=\"\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
             out.println("</form>");
             out.println("</div>");
+            out.println("<div name=\"days\">");
             out.println("<form action=\"\" method=\"post\">");
-            
             out.println(month.toString());
+            out.println("</div></div>");
             
-            out.println("Menu dne: " +day);
+            out.println("<div>Menu dne: " +day);
             out.println(" "+calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
             out.println(" " + calendar.get(Calendar.YEAR));
-            
+            out.println("</div>");
             calendar.set(Calendar.DAY_OF_MONTH, day);
             request.getRequestDispatcher("obedy.jsp").include(request, response);
             
-            out.println("</form>");
+            out.println("<div></form>");
             out.println("<form action=\"homepage.jsp\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"back\" value=\"Zpět\"/>");
-            out.println("</form>");
+            out.println("</form></div>");
 
             out.println("</body></html>");
 
@@ -118,20 +167,13 @@ public class CalendarServlet extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     * response)
-     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doService(request, response);
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     * response)
-     */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doService(request, response);
     }
-
 }

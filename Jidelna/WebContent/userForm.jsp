@@ -39,7 +39,7 @@
                 
                 if (userForm.getId() == 0) {
                     String email = request.getParameter("email");
-                    if (email == null) {
+                    if (email.equals("")) {
                             %> <label style="color: red">Email musí být vyplněn!</label> <%
                     } else if (repository.getUserByEmail(email) != null) {
                             %> <label style="color: red">Uživatel s uvedeným e-mailem již existuje!</label> <%
@@ -87,18 +87,31 @@
             <table>
                 <tr>
                     <%
+                        String email = userForm.getEmail();
+                        if(email == null) {
+                            email = "";
+                        }
+                        String name = userForm.getName();
+                        if(name == null) {
+                            name = "";
+                        }
+                        String surname = userForm.getSurname();
+                        if(surname == null) {
+                            surname = "";
+                        }
+            
                         String readOnly = null;
                         if (userForm.getId() > 0) {
                             readOnly = "readOnly";
                         }
                     %>
-                    <td><label>E-mail:</label></td><td><input type="text" name="email" value="<% out.print(userForm.getEmail()); %>" <% out.print(readOnly); %>/></td>
+                    <td><label>E-mail:</label></td><td><input type="text" name="email" value="<% out.print(email); %>" <% out.print(readOnly); %>/></td>
                 </tr>
                 <tr>
-                    <td><label>Jméno:</label></td><td><input type="text" name="name" value="<% out.print(userForm.getName()); %>"/></td>
+                    <td><label>Jméno:</label></td><td><input type="text" name="name" value="<% out.print(name); %>"/></td>
                 </tr>
                 <tr>
-                    <td><label>Příjmení</label></td><td><input type="text" name="surname" value="<% out.print(userForm.getSurname()); %>"/></td>
+                    <td><label>Příjmení</label></td><td><input type="text" name="surname" value="<% out.print(surname); %>"/></td>
                 </tr>
                 <tr>
                     <td><label>Heslo:</label></td><td><input type="password" name="password" value=""/></td>

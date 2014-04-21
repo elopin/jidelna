@@ -24,3 +24,16 @@ body {
 .dottless {
     list-style-type: none;
 }
+
+#calendar {
+   position: absolute;
+}
+
+#monthSelect {
+    min-width: 100px;
+    
+}
+
+#days {
+    float: none;
+}

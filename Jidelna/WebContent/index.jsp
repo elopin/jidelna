@@ -68,7 +68,7 @@
  <form action="" method="post">
  <table>
   <tr>
-  <td><label>E-mail:</label></td><td><input type="text" name="email" value="admin"/></td>
+  <td><label>E-mail:</label></td><td><input type="text" name="email" value="elopin@seznam.cz"/></td>
   </tr>
   <tr>
   <td><label>Heslo:</label></td><td><input type="password" name="password" value="admin"/></td>

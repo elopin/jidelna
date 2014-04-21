@@ -12,6 +12,7 @@ public class CalendarDay {
     private boolean currentChoice;
     private boolean menuSelected;
 
+    private boolean isUserSelect;
     private boolean admin;
     
     public CalendarDay(Calendar calendar) {
@@ -68,16 +69,27 @@ public class CalendarDay {
         this.admin = isAdmin;
     }
 
+    public void setUserSelect(boolean userSelect) {
+        this.isUserSelect = userSelect;
+    }
+    
+    public boolean isUserSelect() {
+        return isUserSelect;
+    }
+    
     public String toString() {
 	StringBuilder sb = new StringBuilder();
 	if (getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
-	    sb.append("<label style=\"background-color: green\">");
+	    sb.append("<label style=\"background-color: #FF3333\">");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</label>");
 	} else {
 	    if (getMenuBean() != null || admin) {
-		
-		sb.append("<input type=\"submit\" name=\"menuDay\" value=\"");
+		String buttonColor = resolveButtonColor();
+                
+		sb.append("<input style=\"background-color : ");
+                sb.append(buttonColor);
+                sb.append(" \" type=\"submit\" name=\"menuDay\" value=\"");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("\">");
 	    } else {
@@ -87,5 +99,19 @@ public class CalendarDay {
 	    }
 	}
 	return sb.toString();
+    }
+
+    private String resolveButtonColor() {
+        String buttonColor = "#F0F0F0";
+        
+        if(isUserSelect) {
+            buttonColor = "#66FF00";
+        }
+        
+        if(admin && !isUserSelect && getMenuBean() != null) {
+            buttonColor = "#FF00FF";
+        }
+        
+        return buttonColor;
     }
 }

@@ -45,6 +45,9 @@ public class SecurityService {
     }
     
     public boolean authenticate(byte[] userPasswordHash, String password) {
+        if(userPasswordHash == null) {
+            return false;
+        }
         byte[] digest = getEncryptedPassword(password);
         return MessageDigest.isEqual(digest, userPasswordHash);
     }

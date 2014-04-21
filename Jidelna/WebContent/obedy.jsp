@@ -32,34 +32,17 @@
             
             
             DataRepository repository = new DataRepositoryImpl();
-
-            if (request.getParameter("saveDay") != null) {
-        %> 
-        <jsp:setProperty name="newMenu" property="*"/>
-        <%
-                newMenu.setDay(day);
-                newMenu.setMonth(month);
-                newMenu.setYear(year);
-
-                repository.addMenuDay(newMenu);
+ 
+            UserBean userBean = repository.getUserById(user.getId());
+            if (userBean != null) {
+                user.setData(userBean);
             }
             
             if (repository.getDailyMenu(day, month, year) != null) {
                 menu.setData(repository.getDailyMenu(day, month, year));
-                
-                if(request.getParameter("confirm") != null) {
-                    int selection = Integer.parseInt(request.getParameter("selection"));
-                    
-                    UserBean repoUser = repository.getUserById(user.getId());
-                    if(repoUser != null) {
-                        user = repoUser;
-                        userMenu.setUser(user);
-                        userMenu.setDayMenu(menu);
-                        userMenu.setSelection(selection);
-                        repository.addUserMenu(userMenu);
-                    }
-                }
-                
+     
+                session.setAttribute("dailyMenu", menu);
+                                   
                 String menu1 = null;
                 String menu2 = null;
                 String noMenu = null;
@@ -81,7 +64,7 @@
 
 
         %>
-        <label for="menuSelection">Váš aktuální kredit je: <%out.print(user.getCredit());%> Kč</label>
+        <div><label for="menuSelection"><strong>Váš aktuální kredit je: <%out.print(user.getCredit());%> Kč</strong></label>
         <form name="menuSelection" action="" method="post">
             <ul class="dottless">
                 <li><input type="radio" name="selection" value="1" <% out.print(menu1);%>/><jsp:getProperty name="menu" property="menu1"/> <jsp:getProperty name="menu" property="price1"/>
@@ -95,12 +78,14 @@
                             if (user.isAdmin()) {
 
                                 if (menu == null) {
-                                    menu = new DayMenuBean();
-                                    menu.setDay(day);
-                                    menu.setMonth(month);
-                                    menu.setYear(year);
+                                    menu = new DayMenuBean();  
                                 }
-
+                                
+                                menu.setDay(day);
+                                menu.setMonth(month);
+                                menu.setYear(year);
+                                session.setAttribute("newDayMenu", menu);
+                                
                                 String m1 = "Nové menu 1";
                                 String m2 = "Nové menu 2";
 
@@ -122,7 +107,7 @@
                                     <input type="text" name="price2" value="<jsp:getProperty name="menu" property="price2"/>"/>
                                 <li><input type="submit" name="saveDay" value="Uložit menu"/>
                                     <ul>
-                                        </form>
+                                        </form></div>
                                         <%
                                             }
                                         %>

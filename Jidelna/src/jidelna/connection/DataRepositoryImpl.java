@@ -41,6 +41,8 @@ public class DataRepositoryImpl implements DataRepository {
     private PreparedStatement addUserMenu;
     private PreparedStatement deleteUserMenu;
     private PreparedStatement deleteUserMenuByUserId;
+    private PreparedStatement getUserMenusByUser;
+    private PreparedStatement getDayMenuById;
     private Statement statement;
 
     public DataRepositoryImpl() {
@@ -58,6 +60,8 @@ public class DataRepositoryImpl implements DataRepository {
             addUserMenu = connection.getConnection().prepareStatement("INSERT INTO janacek_User_Menu(id_user, id_day_menu, selection) VALUES(?, ?, ?)");
             deleteUserMenu = connection.getConnection().prepareStatement("DELETE FROM janacek_User_Menu WHERE id = ?");
             deleteUserMenuByUserId = connection.getConnection().prepareStatement("DELETE FROM janacek_User_Menu WHERE id_user = ?");
+            getUserMenusByUser = connection.getConnection().prepareStatement("SELECT id, id_user, id_day_menu, selection FROM janacek_User_Menu WHERE id_user = ?");
+            getDayMenuById = connection.getConnection().prepareStatement("SELECT id, date, menu1, price1, menu2, price2 FROM janacek_Day_Menu WHERE id = ?");
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -387,5 +391,73 @@ public class DataRepositoryImpl implements DataRepository {
         }
         
         return price;
+    }
+
+    @Override
+    public List<UserMenuBean> getUserMenusByUser(UserBean user) {
+        List<UserMenuBean> userMenus = null; 
+        
+        if(user != null) {
+            if(user.getId() > 0) {
+                try {
+                    getUserMenusByUser.setInt(1, user.getId());
+                    ResultSet result = getUserMenusByUser.executeQuery();
+                    while(result.next()) {
+                     
+                        DayMenuBean dayMenu = getDayMenuById(result.getInt("id_day_menu"));
+                        if(dayMenu != null) {
+                            UserMenuBean menuBean = new UserMenuBean();
+                            menuBean.setDayMenu(dayMenu);
+                            menuBean.setIdUserMenu(result.getInt("id"));
+                            menuBean.setUser(user);
+                            menuBean.setSelection(result.getInt("selection"));
+                            
+                            if(userMenus == null) {
+                                userMenus = new ArrayList<UserMenuBean>();
+                            }
+                            
+                            userMenus.add(menuBean);
+                        }
+                    }
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return userMenus;
+    }
+
+    private DayMenuBean getDayMenuById(int idDayMenu) {
+        DayMenuBean menuBean = null;
+        if(idDayMenu > 0) {
+            try {
+                getDayMenuById.setInt(1, idDayMenu);
+                ResultSet result = getDayMenuById.executeQuery();
+                if(result.next()) {
+                    menuBean = new DayMenuBean();
+                    menuBean.setId(result.getInt("id"));
+
+                    Date date = result.getDate("date");
+                    Calendar calendar = Calendar.getInstance(new Locale("cs", "CZ"));
+                    calendar.setTime(date);
+
+                    menuBean.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+                    menuBean.setMonth(calendar.get(Calendar.MONTH));
+                    menuBean.setYear(calendar.get(Calendar.YEAR));
+
+                    menuBean.setMenu1(result.getString("menu1"));
+                    menuBean.setPrice1(result.getInt("price1"));
+                    menuBean.setMenu2(result.getString("menu2"));
+                    menuBean.setPrice2(result.getInt("price2"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        return menuBean;
     }
 }

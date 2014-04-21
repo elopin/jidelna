@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import jidelna.beans.DayMenuBean;
+import jidelna.beans.UserMenuBean;
 
 public class CalendarMonth {
 
     private List<CalendarDay> days;
     private Calendar calendar;
 
+    private List<UserMenuBean> userMenus;
+    
     private boolean admin;
     
     public CalendarMonth(Calendar calendar) {
@@ -31,6 +34,7 @@ public class CalendarMonth {
 			if (calDay.getDayInMonth() == menuBean.getDay()) {
 			    calDay.setMenuBean(menuBean);
                             calDay.setAdmin(admin);
+                            calDay.setUserSelect(checkUserSelection(menuBean));
 			}
 		    }
 		}
@@ -73,8 +77,28 @@ public class CalendarMonth {
 		sb.append("</tr><tr>");
 	    }
 	}
-	sb.append("</tr></table></form>");
-
+	sb.append("</tr></table></form>"); 
 	return sb.toString();
+    }
+
+    public void setUserMenus(List<UserMenuBean> userMenus) {
+        this.userMenus = userMenus;
+    }
+
+    private boolean checkUserSelection(DayMenuBean menuBean) {
+        
+        if(userMenus == null) {
+            return false;
+        }
+        if(userMenus.isEmpty()) {
+            return false;
+        }
+        
+        for(UserMenuBean userMenuBean : userMenus) {
+            if(userMenuBean.getDayMenu().getId() == menuBean.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
