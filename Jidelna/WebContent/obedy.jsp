@@ -19,7 +19,8 @@
 
     <%
         Calendar calendar = (Calendar) session.getAttribute("calendar");
-
+        Locale locale = new Locale("cs", "CZ");
+	
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -55,15 +56,20 @@
             }
         %>
         <div id="obedy">
-	    <label for="menuSelection"><strong>Váš aktuální kredit je: <%out.print(user.getCredit());%> Kč</strong></label>
-            <form name="menuSelection" action="" method="post">
+	    <h3>Váš aktuální kredit je: <%out.print(user.getCredit());%> Kč</h3>
+	    <label>Menu dne: <% out.print(day+" "+calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)+" " + calendar.get(Calendar.YEAR)); %></label>
+            <form id="obed" name="menuSelection" action="" method="post">
                 <ul class="dottless">
-                    <li><input type="radio" name="selection" value="1" <% out.print(menu1);%>/><jsp:getProperty name="menu" property="menu1"/> <jsp:getProperty name="menu" property="price1"/>
-                    <li><input type="radio" name="selection" value="2" <% out.print(menu2);%>/><jsp:getProperty name="menu" property="menu2"/> <jsp:getProperty name="menu" property="price2"/>
-                    <li><input type="radio" name="selection" value="0" <% out.print(noMenu);%>/>Bez výběru.
+                    <li><input type="radio" name="selection" value="1" <% out.print(menu1);%>/>
+			<label><jsp:getProperty name="menu" property="menu1"/> <jsp:getProperty name="menu" property="price1"/> Kč</label>
+                    <li><input type="radio" name="selection" value="2" <% out.print(menu2);%>/>
+			<label><jsp:getProperty name="menu" property="menu2"/> <jsp:getProperty name="menu" property="price2"/> Kč</label>
+                    <li><input type="radio" name="selection" value="0" <% out.print(noMenu);%>/>
+			<label>Bez výběru.</label>
                     <li><input type="submit" name="confirm" value="Potvrdit výběr"/>
                 <ul>
             </form>
+	</div>
         <%  }
 
             if (user.isAdmin()) {
@@ -87,17 +93,21 @@
                     m2 = menu.getMenu2();
                 }
 
-        %>
+        %>  <div id="newMenu">  
                 <h2>Zadejte nové menu nebo proveďte změnu stávajícího:</h2>
-                    <form action="" method="post">
+		<label>Menu na den: <% out.print(day+" "+calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)+" " + calendar.get(Calendar.YEAR)); %></label>
+                    <form id="newMenuForm" action="" method="post">
                         <ul class="dottless">
                             <li><input type="text" name="menu1" value="<% out.print(m1); %>"/>
-                                <input type="text" name="price1" value="<jsp:getProperty name="menu" property="price1"/>"/>
+                                <input class="number" type="text" name="price1" value="<jsp:getProperty name="menu" property="price1"/>"/>
+				<label>Kč</label>
                             <li><input type="text" name="menu2" value="<% out.print(m2); %>"/>
-                                <input type="text" name="price2" value="<jsp:getProperty name="menu" property="price2"/>"/>
+                                <input class="number" type="text" name="price2" value="<jsp:getProperty name="menu" property="price2"/>"/>
+				<label>Kč</label>
                             <li><input type="submit" name="saveDay" value="Uložit menu"/>
                         <ul>
                 </form>
+	</div>		
         <% } %> 
-	</div>
+	
 

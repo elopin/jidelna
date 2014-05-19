@@ -28,7 +28,6 @@ public class CalendarServlet extends HttpServlet {
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         HttpSession session = request.getSession();
-        session.setAttribute("lastURI", request.getRequestURI());
         
         DataRepository repository = new DataRepositoryImpl();
         
@@ -134,9 +133,8 @@ public class CalendarServlet extends HttpServlet {
 	    out.println("<div id=\"content\">");
 	    
             out.println("<div id=\"calendar\">");
-            out.println("<div name=\"monthSelect\">");
-	    
-            out.println("<form action=\"\" method=\"post\">");
+            
+            out.println("<form id=\"monthSelect\" action=\"\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
             out.println("<label>");
             out.println(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
@@ -144,26 +142,14 @@ public class CalendarServlet extends HttpServlet {
             out.println("</label>");
             out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
             out.println("</form>");
-            out.println("</div>");
 	    
-            out.println("<div name=\"days\">");
-            out.println("<form action=\"\" method=\"post\">");
+            out.println("<form id=\"daySelect\" action=\"\" method=\"post\">");
             out.println(month.toString());
-	    
-            out.println("</div></div>");
-            
-            out.println("<div>Menu dne: " +day);
-            out.println(" "+calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale));
-            out.println(" " + calendar.get(Calendar.YEAR));
             out.println("</div>");
+            
             calendar.set(Calendar.DAY_OF_MONTH, day);
             request.getRequestDispatcher("obedy.jsp").include(request, response);
             
-            out.println("<div></form>");
-            out.println("<form action=\"homepage.jsp\" method=\"post\">");
-            out.println("<input type=\"submit\" name=\"back\" value=\"Zpět\"/>");
-            out.println("</form></div>");
-
             out.println("</div></div>");
 	    request.getRequestDispatcher("footer.jsp").include(request, response);
 

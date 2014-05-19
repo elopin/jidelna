@@ -95,7 +95,7 @@ public class CalendarDay {
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</button>");
 	    } else {
-		sb.append("<label>");
+		sb.append("<label class=\"dayButton\" style=\"color: grey; background-color : #F0F0F0\">");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</label>");
 	    }

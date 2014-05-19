@@ -9,13 +9,9 @@
 <jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>
 <jsp:useBean id="pageUser" scope="page" class="jidelna.beans.UserBean"/>
 <jsp:include page="header.jsp" />
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Kredit</title>
-    </head>
-    <body>
+<div id="container">
+<jsp:include page="menu.jsp"/>
+<div id="content"/>
         <%
             session.setAttribute("lastURI", request.getRequestURI());
             DataRepository repository = new DataRepositoryImpl();
@@ -31,19 +27,16 @@
 		    pageUser = repo;
                 }
 	    }
-	    if(request.getParameter("back") != null) {
-		response.sendRedirect("homepage.jsp");
-	    }
-            
-            
+	    
 	%>
-        <h1>Doplnění kreditu:</h1>
-        Aktuální stav: <% out.print(pageUser.getCredit()); %>
-        <form action="" method="post">
-            <label>Zadejte navýšení kreditu(záporná hodnota kredit sníží):</label>
-            <input type="text" name="credit"/>
-            <input type="submit" name="send" value="Potvrdit"/>
-            <input type="submit" name="back" value="Zpět"/>
-        </form>
-    </body>
-</html>
+	<div id="credit">
+            <h1>Doplnění kreditu:</h1>
+            <h3>Aktuální stav: <% out.print(pageUser.getCredit()); %> Kč</h3>
+            <form id="creditForm" action="" method="post">
+                <label>Zadejte navýšení kreditu(záporná hodnota kredit sníží):</label>
+                <br><input type="text" name="credit"/>
+                <br><input type="submit" name="send" value="Potvrdit"/>
+            
+            </form>
+	</div>
+</div></div>  

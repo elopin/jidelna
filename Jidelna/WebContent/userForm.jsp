@@ -6,33 +6,22 @@
 <jsp:useBean id="formBean" scope="page" class="jidelna.beans.UserBean"/>
 <jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>
 <jsp:include page="header.jsp"/>
+
+<div id="container">
 <jsp:include page="menu.jsp" />
-	
-        
-
+<div id="content">	
         <%
-
-            if (request.getParameter("back") != null) {
-                response.sendRedirect((String)session.getAttribute("lastURI"));
-            }
-
             DataRepository repository = new DataRepositoryImpl();
 
-            String idUser = request.getParameter("edit");
+            Integer idUser = (Integer)session.getAttribute("edit");
             if (idUser != null) {
-                UserBean repo = repository.getUserById(Integer.parseInt(idUser));
+                UserBean repo = repository.getUserById(idUser);
                 if(repo != null) {
                     formBean.setData(repo);
                 }
+		session.removeAttribute("edit");
             }
 	    
-	    if(session.getAttribute("editLogged") != null) {
-	        boolean editLogged = (Boolean) session.getAttribute("editLogged");
-	        if(editLogged) {
-		    formBean.setData(user);
-		    session.removeAttribute("editLogged");
-	        }
-	    }
             String idUserForm = request.getParameter("save");
             if (idUserForm != null) {
                 formBean.setId(Integer.parseInt(idUserForm));
@@ -136,9 +125,8 @@
                         <% } %>
                 <tr>
                     <td><button class="appButton" type="submit" name="save" value="<% out.print(formBean.getId());%>">Uložit</button></td>
-		    <td><button class="appButton" type="submit" name="back" value="back">Zpět</button></td>
                 </tr>
             </table>
         </form>
-    </div>
+	</div></div></div>
 <jsp:include page="footer.jsp"/>

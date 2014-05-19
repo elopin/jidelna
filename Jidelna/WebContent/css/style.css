@@ -16,6 +16,7 @@
 }
 
 #leftMenu {
+    text-align: center;
     float: left;
     width: 15%;
 }
@@ -42,21 +43,30 @@
 }
 
 #calendar {
-   position: relative;
+   float: left;
+   border: 1px solid;
+   border-radius: 20px;
+   background-color: lawngreen;
+   width: 40%;
+   min-width: 400px;
+   min-height: 150px;
 }
 
 #monthSelect {
-    min-width: 100px;
+    width: 100%;
+    font-family: cursive;
+    margin: 5px;
+    text-align: center;
     
 }
 
-#days {
-    float: none;
+#daySelect {
+    margin: 5px;
 }
 
 
 
-#login, #userProfil {
+#login {
     border: 1px solid;
     border-radius: 20px;
     width: 30%;
@@ -67,13 +77,18 @@
     background-color: lawngreen;
 }
 
-#loginForm, #userForm, #userList {
+#loginForm, #userForm, #userList, #creditForm, #newMenuForm {
     margin: 5%;
     font-family: cursive;
     
 }
 
-#homepage {
+#obed {
+    margin: 5%;
+    font-family: cursive;
+}
+
+#homepage, #userProfil, #credit {
     border: 1px solid;
     border-radius: 20px;
     margin: auto;
@@ -83,6 +98,20 @@
 
 #userListTable {
     margin: auto;
+}
+
+#obedy {
+    position: relative;
+    margin-left: 40%;
+    font-family: cursive;
+    text-align: center;
+}
+
+#newMenu {
+    position: relative;
+    float: left;
+    font-family: cursive;
+    text-align: center;
 }
 
 body {
@@ -103,6 +132,7 @@ h2 {
     border-radius: 10px;
     background-color: lightgreen;
     color: black;
+    cursor: pointer;
 }
 
 #addUserButton {
@@ -123,5 +153,8 @@ h2 {
     margin: 0px;
 }
 
+.number {
+    width: 10%;
+}
 
 

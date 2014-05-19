@@ -4,7 +4,7 @@
     Author     : Lukáš janáček
     
     Hlavička stránek. Obsahuje datum a informaci o přihlášeném uživateli.
-    Umožňuje uživateli odhlášení a přesměrování a editování vlastního profilu.
+    Umožňuje uživateli odhlášení.
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -22,12 +22,7 @@
 	    if(request.getParameter("logout") != null) {
                 user.setLoggedIn(false);
                 response.sendRedirect("index.jsp");
-	    }
-	    if(request.getParameter("editLogged") != null) {
-		session.setAttribute("editLogged", true);
-		response.sendRedirect("userForm.jsp");
-	    }
-			
+	    }		
 	%>
         <div id="header">
             <div id="date">
@@ -37,8 +32,7 @@
             <div id="logout">
                 <div class="infoLabel">Přihlášen uživatel: <jsp:getProperty name="user" property="displayName"/></div>
 		<form action="header.jsp" method="get">   
-		<button class="appButton" type="submit" name="logout" >Odhlásit</button>
-                <button class="appButton" type="submit" name="editLogged" >Můj profil</button>
+		    <button class="appButton" type="submit" name="logout" >Odhlásit</button>
                 </form>
             </div>
         </div>

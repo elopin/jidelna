@@ -6,23 +6,22 @@
 <jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>
 <jsp:include page="header.jsp" />
 
-<h1>Rezervace obědů</h1>
 
-<div id="container">    
+
+<div id="container">
 <jsp:include page="menu.jsp" />
 
 <div id="content"> 
-	
+	<h1>Rezervace obědů</h1>
         <%
-
-            session.setAttribute("lastURI", request.getRequestURI());
-            
-            if(request.getParameter("edit") != null) {
-                
-                request.getRequestDispatcher("userForm.jsp").forward(request, response);
-            }
-            if(request.getParameter("remove") != null) {
-                request.getRequestDispatcher("removeUser.jsp").forward(request, response);
+            if(request.getParameter("newUser") != null) {
+                response.sendRedirect("userForm.jsp");
+            } else if(request.getParameter("edit") != null) {
+		session.setAttribute("edit", Integer.parseInt(request.getParameter("edit")));
+                response.sendRedirect("userForm.jsp");
+            } else if (request.getParameter("remove") != null) {
+		session.setAttribute("remove", request.getParameter("remove"));
+                response.sendRedirect("removeUser.jsp");
             }
        
             if (user.isAdmin()) {
@@ -44,10 +43,9 @@
 
                 <% } %>
             </table>
+	    <input type="submit" name="newUser" value="Přidat strávníka"/>
         </form>
-        <form action="userForm.jsp" method="post">
-            <input id="addUserButton" type="submit" name="newUser" value="Přidat strávníka"/>
-        </form>
+        
 	</div>
         <% } %>
 </div>	
