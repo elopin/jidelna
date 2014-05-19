@@ -48,6 +48,8 @@ public class DataRepositoryImpl implements DataRepository {
     public DataRepositoryImpl() {
         try {
             this.connection = new ConnectionProvider();
+	    
+	    
             statement = connection.getConnection().createStatement();
             addUser = connection.getConnection().prepareStatement("INSERT INTO janacek_User(email, name, surname, admin, password) VALUES(?, ?, ?, ?, ?)");
             updateUser = connection.getConnection().prepareStatement("UPDATE janacek_User SET email = ?, name = ?, surname = ?, admin = ?, password = ? WHERE id = ?");
@@ -459,5 +461,20 @@ public class DataRepositoryImpl implements DataRepository {
         }
         
         return menuBean;
+    }
+    
+    public void checkDatabase() {
+	
+	try {
+	    
+	    if(connection.getConnection().getMetaData().getTables(null, null, "janacek_User", null).next() == false) {
+		new TableCreator().createTables();
+	    } else if(connection.getConnection().createStatement().executeQuery("SELECT name FROM janacek_User WHERE name = 'admin'").next() == false) {
+		new TableCreator().addAdminUser();
+	    }
+	} catch (SQLException ex) {
+	    Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
+	}
+	    
     }
 }

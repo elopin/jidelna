@@ -50,7 +50,7 @@ public class LoginFilter implements Filter {
 
 		UserBean user = (UserBean) req.getSession().getAttribute("user");
 		
-		if (req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/")) {
+		if (req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/") || req.getRequestURI().endsWith("css")) {
 			chain.doFilter(request, response);
 		} else {
                     if (user != null){

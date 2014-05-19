@@ -6,6 +6,26 @@
 
 }
 
+#container {
+    height: 65%;
+    min-height: 400px;
+}
+
+#footer {
+    height: 10%;
+}
+
+#leftMenu {
+    float: left;
+    width: 15%;
+}
+
+#content {
+    float: left;
+    width : 70%;
+    margin-right: 15%;
+}
+
 #logout {
     position : relative;
     float: right;
@@ -17,16 +37,12 @@
 }
 
 
-body {
-    background-color: #0FD9F0;
-}
-
 .dottless {
     list-style-type: none;
 }
 
 #calendar {
-   position: absolute;
+   position: relative;
 }
 
 #monthSelect {
@@ -37,3 +53,75 @@ body {
 #days {
     float: none;
 }
+
+
+
+#login, #userProfil {
+    border: 1px solid;
+    border-radius: 20px;
+    width: 30%;
+    min-width: 100px;
+    min-height: 50px;
+    margin: auto;
+    text-align: center;
+    background-color: lawngreen;
+}
+
+#loginForm, #userForm, #userList {
+    margin: 5%;
+    font-family: cursive;
+    
+}
+
+#homepage {
+    border: 1px solid;
+    border-radius: 20px;
+    margin: auto;
+    text-align: center;
+    background-color: lawngreen;
+}
+
+#userListTable {
+    margin: auto;
+}
+
+body {
+    background-color: #0FD9F0;
+}
+
+h1, h3 {
+    text-align: center;
+    font-family: cursive;
+}
+
+h2 {
+    font-family: cursive;
+}
+
+.appButton, input[type=submit] {
+    font-family: cursive;
+    border-radius: 10px;
+    background-color: lightgreen;
+    color: black;
+}
+
+#addUserButton {
+    margin-bottom: 5%;
+}
+.infoLabel {
+    font-family: cursive;
+}
+
+.dayButton {
+    display: block;
+    text-align: center;
+    font-family: cursive;
+    min-width: 50px;
+    border: 1px solid;
+    border-radius: 10px;
+    color: black;
+    margin: 0px;
+}
+
+
+

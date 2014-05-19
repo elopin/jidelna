@@ -10,10 +10,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet"/>
 <title>Přihlášení</title>
 </head>
 <body>
-
+<div>
     <h1>Rezervace obědů ve školní jídelně.</h1>
 	<%
                 
@@ -34,19 +35,14 @@
                     date.append(calendar.get(Calendar.YEAR));
                     session.setAttribute("currentDay", date.toString());
                     
-                    
-                    
-                    if(loginUser.getEmail().equals("admin") && loginUser.getPassword().equals("admin")) {
-                            loginUser.setName("Karel");
-                            loginUser.setSurname("Testovací");
-                            loginUser.setAdmin(true);
-                            loginUser.setValid(true);
-                            loginUser.setLoggedIn(true);
-                            session.setAttribute("user", loginUser);
-                            response.sendRedirect("homepage.jsp");
+                    if(loginUser.getPassword().length() < 8) {
+        %>
+	 	        <label style="color: red">Neplatné přihlašovací údaje!</label>
+	<%
                             
                     } else {
                         DataRepository repository = new DataRepositoryImpl();
+			repository.checkDatabase();
                         SecurityService security = new SecurityService();
 	 		loginUser.setValid(security.authenticate(repository.getPasswordHashByEmail(loginUser.getEmail()), loginUser.getPassword()));
 			
@@ -64,19 +60,21 @@
                     }
 	 	}
 	 %>
-
- <form action="" method="post">
- <table>
-  <tr>
-  <td><label>E-mail:</label></td><td><input type="text" name="email" value="elopin@seznam.cz"/></td>
-  </tr>
-  <tr>
-  <td><label>Heslo:</label></td><td><input type="password" name="password" value="admin"/></td>
-  </tr>
-  <tr>
-  <td/><td><input type="submit" name="login" value="Přihlásit"></td>
-  </tr>
-  </table>
+ <div id="login">
+ <form id="loginForm" action="" method="post">
+    <table>
+        <tr>
+            <td><label>E-mail:</label></td><td><input type="text" name="email" value="admin"/></td>
+        </tr>
+        <tr>
+           <td><label>Heslo:</label></td><td><input type="password" name="password" value="administrator"/></td>
+        </tr>
+        <tr>
+          <td/><td><input type="submit" name="login" value="Přihlásit"></td>
+        </tr>
+    </table>
  </form>
+ </div>
+</div>
 </body>
 </html>

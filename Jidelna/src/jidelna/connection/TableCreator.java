@@ -29,30 +29,55 @@ public class TableCreator {
     public TableCreator() {
         repository = new DataRepositoryImpl();
         admin = new UserBean();
-        admin.setEmail("elopin@seznam.cz");
+        admin.setEmail("admin");
         admin.setName("admin");
         admin.setSurname("admin");
-        admin.setPassword("admin");
+        admin.setPassword("administrator");
         admin.setAdmin(true);
     }
 
     public void createTables() {
+	
         try {
+	    repository.getConnection().setAutoCommit(false);
             Statement tableStatement = repository.getConnection().createStatement();
+	    
+	    if(checkTable("janacek_User")) {
+	        tableStatement.executeUpdate("DROP TABLE janacek_User");
+	    }
+	    if(checkTable("janacek_Day_Menu")) {
+	        tableStatement.executeUpdate("DROP TABLE janacek_Day_Menu");
+	    }
+	    if(checkTable("janacek_User_Menu")) {
+	        tableStatement.executeUpdate("DROP TABLE janacek_User_Menu");
+	    }
+	    
             tableStatement.executeUpdate(USERS_TABLE);
-            repository.addUser(admin);
+            addAdminUser();
             tableStatement.executeUpdate(DAY_MENU_TABLE);
             tableStatement.executeUpdate(USER_MENU);
+	    
+	    repository.getConnection().commit();
+	    tableStatement.close();
+	    repository.getConnection().close();
 
         } catch (SQLException ex) {
             Logger.getLogger(TableCreator.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
 
     }
+    
+    public void addAdminUser() {
+	repository.addUser(admin);
+    }
 
-    public static void main(String[] args) {
-
-        new TableCreator().createTables();
+    private boolean checkTable(String tableName) {
+	try {
+	    return repository.getConnection().getMetaData().getTables(null, null, tableName, null).next();
+	} catch (SQLException ex) {
+	    Logger.getLogger(TableCreator.class.getName()).log(Level.SEVERE, null, ex);
+	}
+	return false;
     }
 
 }

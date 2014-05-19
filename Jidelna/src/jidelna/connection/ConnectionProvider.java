@@ -18,8 +18,6 @@ import java.util.logging.Logger;
  */
 public class ConnectionProvider {
     private static String dbUrl = "jdbc:mysql://project.iivos.cz:9906/iivos3Dalfa?characterEncoding=utf8";
-    //private static String dbUrl = "jdbc:mysql://localhost:3306/iivos3DAlfa?characterEncoding=utf8";    
-    
     
     private static Connection connection;
     
@@ -27,6 +25,7 @@ public class ConnectionProvider {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(dbUrl,"janacek", "Lukas.Janacek");
+	    
         } catch (SQLException ex) {
             Logger.getLogger(ConnectionProvider.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

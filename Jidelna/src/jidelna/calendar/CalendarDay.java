@@ -80,18 +80,20 @@ public class CalendarDay {
     public String toString() {
 	StringBuilder sb = new StringBuilder();
 	if (getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
-	    sb.append("<label style=\"background-color: #FF3333\">");
+	    sb.append("<label class=\"dayButton\" style=\"background-color: #FF3333\">");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("</label>");
 	} else {
 	    if (getMenuBean() != null || admin) {
 		String buttonColor = resolveButtonColor();
                 
-		sb.append("<input style=\"background-color : ");
+		sb.append("<button class=\"dayButton\" style=\"cursor : pointer; background-color : ");
                 sb.append(buttonColor);
                 sb.append(" \" type=\"submit\" name=\"menuDay\" value=\"");
 		sb.append(String.valueOf(getDayInMonth()));
 		sb.append("\">");
+		sb.append(String.valueOf(getDayInMonth()));
+		sb.append("</button>");
 	    } else {
 		sb.append("<label>");
 		sb.append(String.valueOf(getDayInMonth()));

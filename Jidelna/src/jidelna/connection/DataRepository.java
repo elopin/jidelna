@@ -46,4 +46,6 @@ public interface DataRepository {
     public void deleteUser(UserBean user);
 
     public List<UserMenuBean> getUserMenusByUser(UserBean user);
+    
+    public void checkDatabase();
 }

@@ -11,15 +11,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jidelna.connection.DataRepository;
 
 /**
  *
  * @author elopin
  */
 public class SecurityService {
-    
-    private final String SALT = "ě+á-š*í/č`ř~á!";
+   
     private MessageDigest md;
    
     
@@ -35,7 +33,7 @@ public class SecurityService {
     public byte[] getEncryptedPassword(String password) {
         byte[] digest = null;
         try {
-            String saltedPassword = SALT+password;
+            String saltedPassword = password.substring(0, 8)+password;
             md.update(saltedPassword.getBytes("UTF-8"));
             digest =  md.digest();
         } catch (UnsupportedEncodingException ex) {

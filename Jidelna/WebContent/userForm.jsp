@@ -1,19 +1,14 @@
 <%@page import="jidelna.beans.UserBean"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
 <%@ page import="jidelna.connection.DataRepository" %>
 <%@ page import="jidelna.connection.DataRepositoryImpl" %>
-<jsp:useBean id="userForm" scope="page" class="jidelna.beans.UserBean"/>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="formBean" scope="page" class="jidelna.beans.UserBean"/>
 <jsp:useBean id="user" scope="session" class="jidelna.beans.UserBean"/>
 <jsp:include page="header.jsp"/>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Profil uživatele</title>
-    </head>
-    <body>
-        <h2>Profil uživatele: </h2>
+<jsp:include page="menu.jsp" />
+	
+        
 
         <%
 
@@ -27,17 +22,24 @@
             if (idUser != null) {
                 UserBean repo = repository.getUserById(Integer.parseInt(idUser));
                 if(repo != null) {
-                    userForm.setData(repo);
+                    formBean.setData(repo);
                 }
             }
-            
+	    
+	    if(session.getAttribute("editLogged") != null) {
+	        boolean editLogged = (Boolean) session.getAttribute("editLogged");
+	        if(editLogged) {
+		    formBean.setData(user);
+		    session.removeAttribute("editLogged");
+	        }
+	    }
             String idUserForm = request.getParameter("save");
             if (idUserForm != null) {
-                userForm.setId(Integer.parseInt(idUserForm));
+                formBean.setId(Integer.parseInt(idUserForm));
 
                 boolean emailCheck = false;
                 
-                if (userForm.getId() == 0) {
+                if (formBean.getId() == 0) {
                     String email = request.getParameter("email");
                     if (email.equals("")) {
                             %> <label style="color: red">Email musí být vyplněn!</label> <%
@@ -52,11 +54,11 @@
                 
             if (emailCheck) {
         %>
-        <jsp:setProperty name="userForm" property="email" param="email"/>
-        <jsp:setProperty name="userForm" property="name" param="name"/>
-        <jsp:setProperty name="userForm" property="surname" param="surname"/>
-        <jsp:setProperty name="userForm" property="admin" param="admin"/>
-        <jsp:setProperty name="userForm" property="password" param="password"/>
+        <jsp:setProperty name="formBean" property="email" param="email"/>
+        <jsp:setProperty name="formBean" property="name" param="name"/>
+        <jsp:setProperty name="formBean" property="surname" param="surname"/>
+        <jsp:setProperty name="formBean" property="admin" param="admin"/>
+        <jsp:setProperty name="formBean" property="password" param="password"/>
         <%
                 
                 
@@ -64,44 +66,47 @@
                 String password = request.getParameter("password");
                 String confirmPassword = request.getParameter("confirmPassword");
 
-                if (!password.equals(confirmPassword)) {
+		if(password.length() < 8) {
+		    %> <label style="color: red">Heslo musí mít minimálně 8 znaků!</label> <%
+		} else if (!password.equals(confirmPassword)) {
                     %> <label style="color: red">Neplatné potvrzení hesla!</label> <%
                 } else {
-                    repository.addUser(userForm);
-                    userForm.setData(repository.getUserByEmail(userForm.getEmail()));
+                    repository.addUser(formBean);
+                    formBean.setData(repository.getUserByEmail(formBean.getEmail()));
                 }
 
             } else {
-                if (userForm.getId() == 0) {
+                if (formBean.getId() == 0) {
                     %> <label style="color: red">Vyplňte a potvrďte heslo!</label> <%
                 } else {
-                    repository.addUser(userForm);
-                    userForm.setData(repository.getUserByEmail(userForm.getEmail()));
+                    repository.addUser(formBean);
+                    formBean.setData(repository.getUserByEmail(formBean.getEmail()));
                 }
             }
         }
-            }
+        }
         %>
-
-        <form action="userForm.jsp" method="post">
+	<div id="userProfil">
+	<h2>Profil uživatele: </h2>
+        <form  id="userForm" action="userForm.jsp" method="post">
             <table>
                 <tr>
                     <%
-                        String email = userForm.getEmail();
+                        String email = formBean.getEmail();
                         if(email == null) {
                             email = "";
                         }
-                        String name = userForm.getName();
+                        String name = formBean.getName();
                         if(name == null) {
                             name = "";
                         }
-                        String surname = userForm.getSurname();
+                        String surname = formBean.getSurname();
                         if(surname == null) {
                             surname = "";
                         }
             
                         String readOnly = null;
-                        if (userForm.getId() > 0) {
+                        if (formBean.getId() > 0) {
                             readOnly = "readOnly";
                         }
                     %>
@@ -122,7 +127,7 @@
 
                 <% 
                         String checked = null;   
-                        if (userForm.isAdmin()) {
+                        if (formBean.isAdmin()) {
                             checked = "checked";
                         }
     
@@ -130,10 +135,10 @@
                 <tr><td>Administrátor <input type="checkbox" name="admin" <% out.print(checked); %>/></td><td></td></tr>
                         <% } %>
                 <tr>
-                    <td><button type="submit" name="save" value="<% out.print(userForm.getId());%>">Uložit</button></td><td><input type="submit" name="back" value="Zpět"></td>
+                    <td><button class="appButton" type="submit" name="save" value="<% out.print(formBean.getId());%>">Uložit</button></td>
+		    <td><button class="appButton" type="submit" name="back" value="back">Zpět</button></td>
                 </tr>
             </table>
         </form>
-
-    </body>
-</html>
+    </div>
+<jsp:include page="footer.jsp"/>

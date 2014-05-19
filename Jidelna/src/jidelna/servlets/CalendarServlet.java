@@ -129,9 +129,13 @@ public class CalendarServlet extends HttpServlet {
         try {
             out = response.getWriter();
             request.getRequestDispatcher("header.jsp").include(request, response);
-            out.println("<html><head></head><body>");
-            out.println("<div name=\"calendar\"");
+            out.println("<div id=\"container\">");
+	    request.getRequestDispatcher("menu.jsp").include(request, response);
+	    out.println("<div id=\"content\">");
+	    
+            out.println("<div id=\"calendar\">");
             out.println("<div name=\"monthSelect\">");
+	    
             out.println("<form action=\"\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
             out.println("<label>");
@@ -141,9 +145,11 @@ public class CalendarServlet extends HttpServlet {
             out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
             out.println("</form>");
             out.println("</div>");
+	    
             out.println("<div name=\"days\">");
             out.println("<form action=\"\" method=\"post\">");
             out.println(month.toString());
+	    
             out.println("</div></div>");
             
             out.println("<div>Menu dne: " +day);
@@ -158,7 +164,8 @@ public class CalendarServlet extends HttpServlet {
             out.println("<input type=\"submit\" name=\"back\" value=\"Zpět\"/>");
             out.println("</form></div>");
 
-            out.println("</body></html>");
+            out.println("</div></div>");
+	    request.getRequestDispatcher("footer.jsp").include(request, response);
 
         } catch (IOException e) {
             e.printStackTrace();
