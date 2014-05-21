@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jidelna.beans;
 
 /**
- *
- * @author elopin
+ * Bean představující denní menu.
+ * 
+ * @author Lukáš Janáček
  */
 public class DayMenuBean {
     
@@ -29,50 +26,31 @@ public class DayMenuBean {
 	return id;
     }
 
-    /**
-     * @return the day
-     */
     public int getDay() {
         return day;
     }
 
-    /**
-     * @param day the day to set
-     */
     public void setDay(int day) {
         this.day = day;
     }
 
-    /**
-     * @return the month
-     */
     public int getMonth() {
         return month;
     }
 
-    /**
-     * @param month the month to set
-     */
+    
     public void setMonth(int month) {
         this.month = month;
     }
 
-    /**
-     * @return the year
-     */
     public int getYear() {
         return year;
     }
 
-    /**
-     * @param year the year to set
-     */
     public void setYear(int year) {
         this.year = year;
     }
     
-    
-
     public String getMenu1() {
 	return menu1;
     }
@@ -105,6 +83,10 @@ public class DayMenuBean {
 	this.price2 = price2;
     }
     
+    /**
+     * Naplní bean daty.
+     * @param menu 
+     */
     public void setData(DayMenuBean menu) {
         setId(menu.getId());
         setDay(menu.getDay());
@@ -115,6 +97,4 @@ public class DayMenuBean {
         setMenu2(menu.getMenu2());
         setPrice2(menu.getPrice2());
     }
-    
-    
 }

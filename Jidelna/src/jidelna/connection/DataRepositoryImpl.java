@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jidelna.connection;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,8 +17,10 @@ import jidelna.beans.UserMenuBean;
 import jidelna.security.SecurityService;
 
 /**
- *
- * @author elopin
+ * Třída představující implemntaci rozhraní DataRepository. Třída obsahuje 
+ * implementaci metod pro získání dat z databáze.
+ * 
+ * @author Lukáš Janáček
  */
 public class DataRepositoryImpl implements DataRepository {
 
@@ -69,10 +65,12 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
 
+    /**
+     * Přidá uživatele do databáze.
+     * @param user 
+     */
     @Override
     public void addUser(UserBean user) {
-               
-        
         try {
             if(user.getId() > 0) {
                 UserBean userBean = getUserById(user.getId());
@@ -94,6 +92,10 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
 
+    /**
+     * Odstraní uživatele z databáze.
+     * @param user 
+     */
     @Override
     public void deleteUser(UserBean user) {
         if(user.getId() > 0) {
@@ -123,9 +125,13 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
     
+    /**
+     * Aktualizuje data uživatele.
+     * @param user 
+     */
+    @Override
     public void updateUser(UserBean user) {
         try {
-            
             UserBean oldUser = getUserById(user.getId());
             
             updateUser.setString(1, user.getEmail());
@@ -145,9 +151,13 @@ public class DataRepositoryImpl implements DataRepository {
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
+    /**
+     * Vrací hash hesla uživatele pro autentizaci.
+     * @param email
+     * @return 
+     */
     @Override
     public byte[] getPasswordHashByEmail(String email) {
 
@@ -164,6 +174,10 @@ public class DataRepositoryImpl implements DataRepository {
         return hash;
     }
 
+    /**
+     * Vrací všechny uživatele z databáze.
+     * @return 
+     */
     @Override
     public List<UserBean> getUsers() {
         ResultSet result;
@@ -186,17 +200,21 @@ public class DataRepositoryImpl implements DataRepository {
                     userBean.setCredit(result.getFloat("credit"));
                     userBean.setValid(true);
                     users.add(userBean);
-
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return users;
     }
 
+    /**
+     * Aktualizuje kredit uživatele.
+     * @param user
+     * @param addition
+     * @return 
+     */
     @Override
     public UserBean updateUserCredit(UserBean user, double addition) {
         try {
@@ -210,6 +228,11 @@ public class DataRepositoryImpl implements DataRepository {
         return userBean;
     }
 
+    /**
+     * Vrací uživatele podle e-mailu.
+     * @param email
+     * @return 
+     */
     @Override
     public UserBean getUserByEmail(String email) {
         UserBean user = null;
@@ -222,10 +245,14 @@ public class DataRepositoryImpl implements DataRepository {
                 }
             }
         }
-
         return user;
     }
 
+    /**
+     * Vrací uživatele podle jeho id.
+     * @param id
+     * @return 
+     */
     @Override
     public UserBean getUserById(int id) {
         UserBean user = null;
@@ -240,14 +267,12 @@ public class DataRepositoryImpl implements DataRepository {
         return user;
     }
 
-    @Override
-    public Connection getConnection() {
-        return this.connection.getConnection();
-    }
-
+    /**
+     * Vrací všechny denní menu.
+     * @return 
+     */
     @Override
     public List<DayMenuBean> getMenuDays() {
-
         List<DayMenuBean> menus = null;
         ResultSet result;
 
@@ -255,7 +280,6 @@ public class DataRepositoryImpl implements DataRepository {
             result = statement.executeQuery("SELECT id, date, menu1, price1, menu2, price2 FROM janacek_Day_Menu");
 
             if (result != null) {
-
                 menus = new ArrayList<DayMenuBean>();
                 while (result.next()) {
 
@@ -276,17 +300,22 @@ public class DataRepositoryImpl implements DataRepository {
                     menuBean.setPrice2(result.getInt("price2"));
 
                     menus.add(menuBean);
-
                 }
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return menus;
     }
 
+    /**
+     * Vrací denní menu podle dne.
+     * @param day
+     * @param month
+     * @param year
+     * @return 
+     */
     @Override
     public DayMenuBean getDailyMenu(int day, int month, int year) {
         DayMenuBean dailyMenu = null;
@@ -301,9 +330,12 @@ public class DataRepositoryImpl implements DataRepository {
         return dailyMenu;
     }
 
+    /**
+     * Přidá denní menu.
+     * @param menuDay 
+     */
     @Override
     public void addMenuDay(DayMenuBean menuDay) {
-
         DayMenuBean dayMenu = getDailyMenu(menuDay.getDay(), menuDay.getMonth(), menuDay.getYear());
         
         try {
@@ -331,6 +363,12 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
 
+    /**
+     * Vrací denní menu uživatele.
+     * @param user
+     * @param dayMenu
+     * @return 
+     */
     @Override
     public UserMenuBean getUserMenu(UserBean user, DayMenuBean dayMenu) {
         UserMenuBean userMenu = null;
@@ -356,13 +394,17 @@ public class DataRepositoryImpl implements DataRepository {
         return userMenu;
     }
 
+    /**
+     * Přidá denní menu uživatele.
+     * @param userMenu 
+     */
     @Override
     public void addUserMenu(UserMenuBean userMenu) {
         UserMenuBean userMenuBean = getUserMenu(userMenu.getUser(), userMenu.getDayMenu());
         try {
             if(userMenuBean != null) {
                 
-                int price = getPriceFromSelection(userMenuBean);
+                double price = getPriceFromSelection(userMenuBean);
                 updateUserCredit(userMenuBean.getUser(), price);
                 deleteUserMenu.setInt(1, userMenuBean.getIdUserMenu());
                 deleteUserMenu.executeUpdate();
@@ -375,7 +417,7 @@ public class DataRepositoryImpl implements DataRepository {
                 addUserMenu.setInt(2, userMenu.getDayMenu().getId());
                 addUserMenu.setInt(3, userMenu.getSelection());
                 addUserMenu.executeUpdate();
-                int price = getPriceFromSelection(userMenu);
+                double price = getPriceFromSelection(userMenu);
                 updateUserCredit(userMenu.getUser(), -price);
             }
             
@@ -384,17 +426,26 @@ public class DataRepositoryImpl implements DataRepository {
         }
     }
 
-    private int getPriceFromSelection(UserMenuBean userMenuBean) {
-        int price = 0;
+    /**
+     * Vrací cenu vybraného oběda uživatele.
+     * @param userMenuBean
+     * @return 
+     */
+    private double getPriceFromSelection(UserMenuBean userMenuBean) {
+        double price = 0;
         if(userMenuBean.getSelection() == 1) {
             price = userMenuBean.getDayMenu().getPrice1();
         } else if(userMenuBean.getSelection() == 2) {
             price = userMenuBean.getDayMenu().getPrice2();
         }
-        
         return price;
     }
 
+    /**
+     * Vrací všechna denní menu uživatele.
+     * @param user
+     * @return 
+     */
     @Override
     public List<UserMenuBean> getUserMenusByUser(UserBean user) {
         List<UserMenuBean> userMenus = null; 
@@ -420,17 +471,20 @@ public class DataRepositoryImpl implements DataRepository {
                             
                             userMenus.add(menuBean);
                         }
-                    }
-                    
+                    }   
                 } catch (SQLException ex) {
                     Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        
         return userMenus;
     }
-
+    
+    /**
+     * Vrací denní menu podle id.
+     * @param idDayMenu
+     * @return 
+     */
     private DayMenuBean getDayMenuById(int idDayMenu) {
         DayMenuBean menuBean = null;
         if(idDayMenu > 0) {
@@ -459,22 +513,26 @@ public class DataRepositoryImpl implements DataRepository {
             }
             
         }
-        
         return menuBean;
     }
     
+    /**
+     * Zkontroluje přítomnost tabulek a účtu administrátora v databázi.
+     * Pokud je potřeba zavolá metody pro obnovení tabulek.
+     */
+    @Override
     public void checkDatabase() {
-	
 	try {
-	    
-	    if(connection.getConnection().getMetaData().getTables(null, null, "janacek_User", null).next() == false) {
-		new TableCreator().createTables();
-	    } else if(connection.getConnection().createStatement().executeQuery("SELECT name FROM janacek_User WHERE name = 'admin'").next() == false) {
+	    if(connection.getConnection().getMetaData().getTables(null, null, "janacek_User", null).next() == false ||
+	       connection.getConnection().getMetaData().getTables(null, null, "janacek_Day_Menu", null).next() == false || 
+	       connection.getConnection().getMetaData().getTables(null, null, "janacek_User_Menu", null).next() == false) {
+	        new TableCreator().createTables();
+	    } 
+	    if(connection.getConnection().createStatement().executeQuery("SELECT name FROM janacek_User WHERE name = 'admin'").next() == false) {
 		new TableCreator().addAdminUser();
 	    }
 	} catch (SQLException ex) {
 	    Logger.getLogger(DataRepositoryImpl.class.getName()).log(Level.SEVERE, null, ex);
-	}
-	    
+	}    
     }
 }

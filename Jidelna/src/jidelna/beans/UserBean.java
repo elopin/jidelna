@@ -1,5 +1,10 @@
 package jidelna.beans;
 
+/**
+ * Bean představující uživatele. 
+ * 
+ * @author Lukáš Janáček
+ */
 public class UserBean {
 
     private int id;
@@ -7,9 +12,10 @@ public class UserBean {
     private String name;
     private String surname;
     private String displayName;
-    private boolean admin;
     private String password;
     private double credit;
+    
+    private boolean admin;
     private boolean isValid;
     private boolean isLoggedIn;
 
@@ -29,30 +35,18 @@ public class UserBean {
         this.email = email;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the surname
-     */
     public String getSurname() {
         return surname;
     }
 
-    /**
-     * @param surname the surname to set
-     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -119,6 +113,10 @@ public class UserBean {
         return displayName;
     }
 
+    /**
+     * Naplní bean daty uživatele.
+     * @param user 
+     */
     public void setData(UserBean user) {
         setId(user.getId());
         setEmail(user.getEmail());
@@ -127,5 +125,4 @@ public class UserBean {
         setAdmin(user.isAdmin());
         setCredit(user.getCredit());
     }
-
 }

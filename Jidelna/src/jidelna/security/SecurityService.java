@@ -13,8 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author elopin
+ * Třída pro autentizaci uživatele. Obsahuje metodu pro vytvoření
+ * hashe hesla pro uložení do databáze.
+ * 
+ * @author Lukáš Janáček
  */
 public class SecurityService {
    

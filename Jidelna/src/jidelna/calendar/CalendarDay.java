@@ -3,6 +3,11 @@ package jidelna.calendar;
 import java.util.Calendar;
 import jidelna.beans.DayMenuBean;
 
+/**
+ * Třída představující den v kalendáři.
+ * 
+ * @author Lukáš Janáček
+ */
 public class CalendarDay {
 
     private DayMenuBean menuBean;
@@ -77,6 +82,11 @@ public class CalendarDay {
         return isUserSelect;
     }
     
+    /**
+     * Metoda vrací html komponentu představující tlačítko s číslem dne v
+     * kalendáři pro výběr obědového menu.
+     * @return 
+     */
     public String toString() {
 	StringBuilder sb = new StringBuilder();
 	if (getDayInWeek() == Calendar.SATURDAY || getDayInWeek() == Calendar.SUNDAY) {
@@ -105,15 +115,12 @@ public class CalendarDay {
 
     private String resolveButtonColor() {
         String buttonColor = "#F0F0F0";
-        
         if(isUserSelect) {
             buttonColor = "#66FF00";
         }
-        
         if(admin && !isUserSelect && getMenuBean() != null) {
             buttonColor = "#FF00FF";
         }
-        
         return buttonColor;
     }
 }

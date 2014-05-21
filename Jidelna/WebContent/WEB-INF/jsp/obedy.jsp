@@ -1,7 +1,10 @@
 <%-- 
     Document   : obedy
     Created on : Mar 15, 2014, 9:27:59 PM
-    Author     : elopin
+    Author     : Lukáš Janáček
+
+    Komponenta představující formuláře pro výběr oběda z menu a vytvoření
+    nového menu.
 --%>
 
 <%@page import="jidelna.beans.UserBean"%>
@@ -15,7 +18,6 @@
 <jsp:useBean id="menu" scope="page" class="jidelna.beans.DayMenuBean"/>
 <jsp:useBean id="newMenu" scope="page" class="jidelna.beans.DayMenuBean"/>
 <jsp:useBean id="userMenu" scope="page" class="jidelna.beans.UserMenuBean"/>
-
 
     <%
         Calendar calendar = (Calendar) session.getAttribute("calendar");
@@ -96,18 +98,18 @@
         %>  <div id="newMenu">  
                 <h2>Zadejte nové menu nebo proveďte změnu stávajícího:</h2>
 		<label>Menu na den: <% out.print(day+" "+calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)+" " + calendar.get(Calendar.YEAR)); %></label>
-                    <form id="newMenuForm" action="" method="post">
-                        <ul class="dottless">
-                            <li><input type="text" name="menu1" value="<% out.print(m1); %>"/>
-                                <input class="number" type="text" name="price1" value="<jsp:getProperty name="menu" property="price1"/>"/>
-				<label>Kč</label>
-                            <li><input type="text" name="menu2" value="<% out.print(m2); %>"/>
-                                <input class="number" type="text" name="price2" value="<jsp:getProperty name="menu" property="price2"/>"/>
-				<label>Kč</label>
-                            <li><input type="submit" name="saveDay" value="Uložit menu"/>
-                        <ul>
+                <form id="newMenuForm" action="" method="post">
+                    <ul class="dottless">
+                        <li><input type="text" name="menu1" value="<% out.print(m1); %>"/>
+                            <input class="number" type="text" name="price1" value="<jsp:getProperty name="menu" property="price1"/>"/>
+		            <label>Kč</label>
+                        <li><input type="text" name="menu2" value="<% out.print(m2); %>"/>
+                            <input class="number" type="text" name="price2" value="<jsp:getProperty name="menu" property="price2"/>"/>
+			    <label>Kč</label>
+                        <li><input type="submit" name="saveDay" value="Uložit menu"/>
+                    <ul>
                 </form>
-	</div>		
+	    </div>		
         <% } %> 
 	
 

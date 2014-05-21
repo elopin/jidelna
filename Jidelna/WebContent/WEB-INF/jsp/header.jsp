@@ -18,23 +18,14 @@
         <title></title>
     </head>
     <body>
-        <%
-	    if(request.getParameter("logout") != null) {
-                user.setLoggedIn(false);
-                response.sendRedirect("index.jsp");
-	    }		
-	%>
         <div id="header">
             <div id="date">
                 <label class="infoLabel">Dnešní datum: <% out.print((String)session.getAttribute("currentDay")); %></label>
-            </div>
-            
+            </div> 
             <div id="logout">
                 <div class="infoLabel">Přihlášen uživatel: <jsp:getProperty name="user" property="displayName"/></div>
-		<form action="header.jsp" method="get">   
+		<form action="Jidelna" method="post">   
 		    <button class="appButton" type="submit" name="logout" >Odhlásit</button>
                 </form>
             </div>
         </div>
-    
-

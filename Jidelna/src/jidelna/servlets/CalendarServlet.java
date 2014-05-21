@@ -20,9 +20,9 @@ import jidelna.connection.DataRepository;
 import jidelna.connection.DataRepositoryImpl;
 
 /**
- * Servlet implementation class CalendarServlet
+ * Servlet představující stránku pro výběr denního menu. Administrátor
+ * má k dispozici i formulář pro vytvoření nového menu.
  */
-@WebServlet("/CalendarServlet")
 public class CalendarServlet extends HttpServlet {
 
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -31,7 +31,8 @@ public class CalendarServlet extends HttpServlet {
         
         DataRepository repository = new DataRepositoryImpl();
         
-         if (request.getParameter("saveDay") != null) {
+	//uložení denního menu
+        if (request.getParameter("saveDay") != null) {
             DayMenuBean newMenu = (DayMenuBean)session.getAttribute("newDayMenu");
             if(newMenu != null) { 
                 String menu1 = request.getParameter("menu1");
@@ -63,6 +64,7 @@ public class CalendarServlet extends HttpServlet {
         
         UserBean user = (UserBean) session.getAttribute("user");
 
+	//aktuální denní menu pro přihlášeného uživatele
         DayMenuBean menu = (DayMenuBean)session.getAttribute("dailyMenu");
         if(menu != null) {
         
@@ -82,16 +84,14 @@ public class CalendarServlet extends HttpServlet {
                 }
             }
         
-        
         List<UserMenuBean> userMenus = repository.getUserMenusByUser(user);
         
+	//ošetření posunu o měsíc vpřed nebo zpět
         Locale locale = new Locale("cs", "CZ");
         Calendar calendar = (Calendar) session.getAttribute("calendar");
-        
         if (calendar == null) {
             calendar = Calendar.getInstance(locale);
         }
-
         int day = 0;
         if(request.getParameter("menuDay") != null) {
             day = Integer.parseInt(request.getParameter("menuDay"));
@@ -101,18 +101,17 @@ public class CalendarServlet extends HttpServlet {
         } else {
             calendar.set(Calendar.DAY_OF_MONTH, day);
         }
-        
         if (request.getParameter("before") != null) {
             request.setAttribute("before", true);
             calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH)) - 1);
         }
-
         if (request.getParameter("after") != null) {
             request.setAttribute("after", true);
             calendar.set(Calendar.MONTH, (calendar.get(Calendar.MONTH)) + 1);
         }
         session.setAttribute("calendar", calendar);
         
+	//vytvoření měsíce kalendáře
         CalendarMonth month = new CalendarMonth(calendar);
         month.setAdmin(user.isAdmin());
         if(userMenus != null) {
@@ -124,16 +123,16 @@ public class CalendarServlet extends HttpServlet {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         response.setDateHeader("Expires", 0); // Proxies.
+		
         PrintWriter out = null;
         try {
             out = response.getWriter();
-            request.getRequestDispatcher("header.jsp").include(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/header.jsp").include(request, response);
             out.println("<div id=\"container\">");
-	    request.getRequestDispatcher("menu.jsp").include(request, response);
+	    request.getRequestDispatcher("WEB-INF/jsp/menu.jsp").include(request, response);
 	    out.println("<div id=\"content\">");
 	    
             out.println("<div id=\"calendar\">");
-            
             out.println("<form id=\"monthSelect\" action=\"\" method=\"post\">");
             out.println("<input type=\"submit\" name=\"before\" value=\"<\"/>");
             out.println("<label>");
@@ -143,15 +142,17 @@ public class CalendarServlet extends HttpServlet {
             out.println("<input type=\"submit\" name=\"after\" value=\">\"/>");
             out.println("</form>");
 	    
+	    //přidání dnů v měsíci
             out.println("<form id=\"daySelect\" action=\"\" method=\"post\">");
             out.println(month.toString());
             out.println("</div>");
             
+	    //přidání komponenty pro výběr obědů
             calendar.set(Calendar.DAY_OF_MONTH, day);
-            request.getRequestDispatcher("obedy.jsp").include(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/obedy.jsp").include(request, response);
             
             out.println("</div></div>");
-	    request.getRequestDispatcher("footer.jsp").include(request, response);
+	    request.getRequestDispatcher("WEB-INF/jsp/footer.jsp").include(request, response);
 
         } catch (IOException e) {
             e.printStackTrace();

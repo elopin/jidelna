@@ -6,6 +6,11 @@ import java.util.List;
 import jidelna.beans.DayMenuBean;
 import jidelna.beans.UserMenuBean;
 
+/**
+ * Třída představující měsíc v kalendáři.
+ * 
+ * @author Lukáš Janáček
+ */
 public class CalendarMonth {
 
     private List<CalendarDay> days;
@@ -25,6 +30,11 @@ public class CalendarMonth {
 
     }
 
+    /**
+     * Nastaví měsíční denní menu. Podle stavu denního menu nastaví barvy 
+     * tlačítek, představující jednotlivé dny v kalendáři.
+     * @param menus 
+     */
     public void setMenus(List<DayMenuBean> menus) {
 	for (CalendarDay calDay : days) {
             calDay.setAdmin(admin);
@@ -50,7 +60,11 @@ public class CalendarMonth {
         this.admin = isAdmin;
     }
 
-    @Override
+    /**
+     * Metoda vrací textový řetězec představující html komponentu představující
+     * měsíc se dny pro výběr denního menu.
+     * @return 
+     */
     public String toString() {
 	StringBuilder sb = new StringBuilder();
 	sb.append("<form action=\"\" method=\"post\">");
@@ -85,8 +99,7 @@ public class CalendarMonth {
         this.userMenus = userMenus;
     }
 
-    private boolean checkUserSelection(DayMenuBean menuBean) {
-        
+    private boolean checkUserSelection(DayMenuBean menuBean) {  
         if(userMenus == null) {
             return false;
         }

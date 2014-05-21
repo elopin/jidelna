@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	id="WebApp_ID" version="3.0">
-	<display-name>Jidelna</display-name>
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-
-	<servlet>
-		<servlet-name>calendar</servlet-name>
-		<servlet-class>jidelna.servlets.CalendarServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>calendar</servlet-name>
-		<url-pattern>/Jidelna/CalendarServlet</url-pattern>
-	</servlet-mapping>
-
-	<filter>
-		<filter-name>loginFilter</filter-name>
-		<filter-class>jidelna.filters.LoginFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>loginFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<session-config>
-		<session-timeout>30</session-timeout>
-	</session-config>
+<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <display-name>Jidelna</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
+    </error-page>
+    <servlet>
+        <servlet-name>calendar</servlet-name>
+        <servlet-class>jidelna.servlets.CalendarServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>menu</servlet-name>
+        <servlet-class>jidelna.servlets.JidelnaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>calendar</servlet-name>
+        <url-pattern>/Obedy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>menu</servlet-name>
+        <url-pattern>/Jidelna</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>jidelna.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
 </web-app>

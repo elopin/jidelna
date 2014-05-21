@@ -1,7 +1,9 @@
 <%-- 
     Document   : footer
     Created on : 18.5.2014, 22:43:50
-    Author     : elopin
+    Author     : Lukáš Janáček
+
+    Patička stránek.
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
