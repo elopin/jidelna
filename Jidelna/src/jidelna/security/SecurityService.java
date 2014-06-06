@@ -35,7 +35,7 @@ public class SecurityService {
     public byte[] getEncryptedPassword(String password) {
         byte[] digest = null;
         try {
-            String saltedPassword = password.substring(0, 8)+password;
+            String saltedPassword = password.toUpperCase()+password;
             md.update(saltedPassword.getBytes("UTF-8"));
             digest =  md.digest();
         } catch (UnsupportedEncodingException ex) {
